@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Planos & Diseño | VADGOD INGS</title>
+
+  
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+
+
+  <style>
+
+    :root {
+
+      --navy: #061325;
+
+      --navy-deep: #030a14;
+
+      --gold: #C9A227;
+
+      --gold-light: #e8c655;
+
+      --paper: #FAF8F4;
+
+      --concrete: #F2EFEB;
+
+      --steel: #6E7985;
+
+      --ink: #1a1e23;
+
+      --line: rgba(26,30,35,0.08);
+
+      
+
+      --display: 'Cinzel', serif;
+
+      --body: 'Inter', sans-serif;
+
+      --mono: 'JetBrains Mono', monospace;
+
+      
+
+      --radius-s: 4px;
+
+      --ease: cubic-bezier(0.2, 0, 0, 1);
+
+    }
+
+    
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body { font-family: var(--body); color: var(--ink); background: var(--paper); overflow-x: hidden; }
+
+    img { max-width: 100%; height: auto; display: block; }
+
+    a { text-decoration: none; color: inherit; }
+
+    
+
+    .wrap { max-width: 1280px; margin: 0 auto; padding: 0 40px; width: 100%; }
+
+    
+
+    /* NAV */
+
+    .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 22px 0; background: rgba(6, 19, 37, 0.65); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(250,248,244,.06); transition: background .3s, padding .3s; }
+
+    .nav .wrap { display: flex; justify-content: space-between; align-items: center; }
+
+    .brand { display: flex; align-items: center; gap: 12px; }
+
+    .brand img { height: 70px; width: auto; border-radius: var(--radius-s); filter: drop-shadow(0px 4px 18px rgba(201, 162, 39, 0.4)) drop-shadow(0px 2px 4px rgba(0,0,0,0.6)); transition: transform 0.3s ease; }
+
+    .brand:hover img { transform: scale(1.03); }
+
+    .brand-text { font-family: var(--display); font-weight: 700; font-size: 16.5px; color: var(--gold); text-transform: uppercase; letter-spacing: .04em; line-height: 1.15; display: flex; flex-direction: column; }
+
+    .brand-text small { font-family: var(--mono); font-weight: 400; font-size: 9px; letter-spacing: .2em; color: rgba(250,248,244,.55); margin-top: 4px; text-transform: uppercase; }
+
+    
+
+    nav.links { display: flex; align-items: center; gap: 34px; }
+
+    nav.links > a { font-size: 14px; font-weight: 500; color: var(--paper); position: relative; padding: 8px 0; transition: color .3s; }
+
+    nav.links > a:hover { color: var(--gold); }
+
+    
+
+    .btn { display: inline-flex; align-items: center; gap: 10px; padding: 15px 26px; font-size: 13.5px; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; border-radius: var(--radius-s); transition: transform .25s ease, box-shadow .25s ease, background .25s ease; border: 1px solid transparent; }
+
+    .btn-gold { background: var(--gold); color: var(--navy-deep); }
+
+    .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 16px 32px -10px rgba(201,162,39,.55); }
+
+
+
+    /* HERO */
+
+    .hero-planos { background: var(--navy-deep); color: white; padding: 180px 0 80px; text-align: center; }
+
+    .hero-planos .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: .15em; color: var(--gold); text-transform: uppercase; margin-bottom: 20px; display: block; }
+
+    .hero-planos h1 { font-family: var(--display); font-size: clamp(36px, 5vw, 60px); line-height: 1.1; margin-bottom: 24px; text-transform: uppercase; }
+
+    
+
+    /* GALERIA GRID */
+
+    .galeria-section { padding: 80px 0 120px; background: var(--paper); }
+
+    
+
+    .grid-container {
+
+        display: grid;
+
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+
+        gap: 30px;
+
+    }
+
+    
+
+    .gallery-card {
+
+        background: #fff;
+
+        border-radius: 8px;
+
+        overflow: hidden;
+
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+
+        cursor: pointer;
+
+        transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+
+    }
+
+    .gallery-card:hover {
+
+        transform: translateY(-8px);
+
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+
+    }
+
+    
+
+    .gallery-card .img-wrap {
+
+        height: 240px;
+
+        overflow: hidden;
+
+    }
+
+    .gallery-card img {
+
+        width: 100%;
+
+        height: 100%;
+
+        object-fit: cover;
+
+        transition: transform 0.6s var(--ease);
+
+    }
+
+    .gallery-card:hover img {
+
+        transform: scale(1.08);
+
+    }
+
+    
+
+    .gallery-card .info {
+
+        padding: 25px 20px;
+
+    }
+
+    .gallery-card .info h4 {
+
+        font-family: var(--display);
+
+        font-size: 16px;
+
+        color: var(--navy);
+
+        text-transform: uppercase;
+
+        letter-spacing: 0.05em;
+
+    }
+
+
+
+    /* LIGHTBOX */
+
+    .lightbox {
+
+        position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000;
+
+        display: none; align-items: center; justify-content: center;
+
+        opacity: 0; transition: opacity 0.3s ease;
+
+    }
+
+    .lightbox.active { display: flex; opacity: 1; }
+
+    .lightbox img { max-width: 90vw; max-height: 85vh; object-fit: contain; border-radius: 4px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+
+    .lightbox-close { position: absolute; top: 30px; right: 40px; color: #fff; font-size: 40px; cursor: pointer; line-height: 1; }
+
+    .lightbox-caption { position: absolute; bottom: 30px; text-align: center; color: #fff; font-family: var(--display); font-size: 20px; text-transform: uppercase; }
+
+
+
+    /* FOOTER */
+
+    .footer { background: var(--navy); padding: 80px 0 40px; color: var(--paper); border-top: 1px solid rgba(255,255,255,0.05); }
+
+  </style>
+
+</head>
+
+<body>
+
+
+
+  <header class="nav" id="siteNav">
+
+    <div class="wrap">
+
+      <a href="index.html" class="brand">
+
+        <img src="./WhatsApp Image 2026-07-09 at 10.41.46 AM.png" alt="GRUPO VAD GOD ING'S">
+
+        <span class="brand-text">
+
+          Grupo Vad God Ings
+
+          <small>Ingeniera civil &amp; construccin</small>
+
+        </span>
+
+      </a>
+
+      <nav class="links">
+
+        <a href="index.html">Inicio</a>
+
+        <a href="index.html#servicios" style="color:var(--gold);">Servicios</a>
+
+        <a href="obras.html">Obras</a>
+
+        <a href="nosotros.html">Nosotros</a>
+
+        <a href="index.html#contacto">Contacto</a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+
+  <section class="hero-planos">
+
+    <div class="wrap" data-aos="fade-up">
+
+      <span class="eyebrow">Arquitectura & Ingeniería</span>
+
+      <h1>Planos & Diseño</h1>
+
+      <p style="max-width:700px; margin:0 auto; color:rgba(250,248,244,.7); font-size:18px; line-height: 1.6;">
+
+        Desarrollamos proyectos arquitectónicos y estructurales listos para licencia municipal. Explora nuestra galería de diseños conceptuales y renders fotorealistas.
+
+      </p>
+
+      <div style="margin-top:40px;">
+
+        <a href="https://wa.me/+51 984 515 818?text=Hola,%20deseo%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20dise%C3%B1os%20y%20planos" target="_blank" class="btn btn-gold">Solicitar Cotización de Planos</a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <section class="galeria-section">
+
+    <div class="wrap">
+
+      
+
+      <div class="grid-container" data-aos="fade-up">
+
+                                <div class="gallery-card" onclick="openLightbox('/Fotos%20Proyectos/PROYECTO%20ALBORADA%20-%20CASA%20DE%20CAMPO.png', 'PROYECTO ALBORADA   CASA DE CAMPO')">
+
+                <div class="img-wrap">
+
+                    <img src="./Fotos%20Proyectos/PROYECTO%20ALBORADA%20-%20CASA%20DE%20CAMPO.png" loading="lazy" alt="PROYECTO ALBORADA   CASA DE CAMPO">
+
+                </div>
+
+                <div class="info">
+
+                    <h4>PROYECTO ALBORADA   CASA DE CAMPO</h4>
+
+                </div>
+
+            </div>
+
+                        <div class="gallery-card" onclick="openLightbox('/Fotos%20Proyectos/PROYECTO%20ALBORADA%20-%20INTERIOR%201.png', 'PROYECTO ALBORADA   INTERIOR 1')">
+
+                <div class="img-wrap">
+
+                    <img src="./Fotos%20Proyectos/PROYECTO%20ALBORADA%20-%20INTERIOR%201.png" loading="lazy" alt="PROYECTO ALBORADA   INTERIOR 1">
+
+                </div>
+
+                <div class="info">
+
+                    <h4>PROYECTO ALBORADA   INTERIOR 1</h4>
+
+                </div>
+
+            </div>
+
+                        <div class="gallery-card" onclick="openLightbox('/Fotos%20Proyectos/PROYECTO%20ALBORADA%20-%20INTERIOR%202.png', 'PROYECTO ALBORADA   INTERIOR 2')">
+
+                <div class="img-wrap">
+
+                    <img src="./Fotos%20Proyectos/PROYECTO%20ALBORADA%20-%20INTERIOR%202.png" loading="lazy" alt="PROYECTO ALBORADA   INTERIOR 2">
+
+                </div>
+
+                <div class="info">
+
+                    <h4>PROYECTO ALBORADA   INTERIOR 2</h4>
+
+                </div>
+
+            </div>
+
+                        <div class="gallery-card" onclick="openLightbox('/Fotos%20Proyectos/PROYECTO%20ALBORADA%20-%20INTERIOR%203.png', 'PROYECTO ALBORADA   INTERIOR 3')">
+
+                <div class="img-wrap">
+
+                    <img src="./Fotos%20Proyectos/PROYECTO%20ALBORADA%20-%20INTERIOR%203.png" loading="lazy" alt="PROYECTO ALBORADA   INTERIOR 3">
+
+                </div>
+
+                <div class="info">
+
+                    <h4>PROYECTO ALBORADA   INTERIOR 3</h4>
+
+                </div>
+
+            </div>
+
+                        <div class="gallery-card" onclick="openLightbox('/Fotos%20Proyectos/PROYECTO%20AMALFI-%20INTERIOR%201.png', 'PROYECTO AMALFI  INTERIOR 1')">
+
+                <div class="img-wrap">
+
+                    <img src="./Fotos%20Proyectos/PROYECTO%20AMALFI-%20INTERIOR%201.png" loading="lazy" alt="PROYECTO AMALFI  INTERIOR 1">
+
+                </div>
+
+                <div class="info">
+
+                    <h4>PROYECTO AMALFI  INTERIOR 1</h4>
+
+                </div>
+
+            </div>
+
+                        <div class="gallery-card" onclick="openLightbox('/Fotos%20Proyectos/PROYECTO%20AMALFI-%20INTERIOR%202.png', 'PROYECTO AMALFI  INTERIOR 2')">
+
+                <div class="img-wrap">
+
+                    <img src="./Fotos%20Proyectos/PROYECTO%20AMALFI-%20INTERIOR%202.png" loading="lazy" alt="PROYECTO AMALFI  INTERIOR 2">
+
+                </div>
+
+                <div class="info">
+
+                    <h4>PROYECTO AMALFI  INTERIOR 2</h4>
+
+                </div>
+
+            </div>
+
+                        <div class="gallery-card" onclick="openLightbox('/Fotos%20Proyectos/PROYECTO%20AMALFI-%20INTERIOR%203.png', 'PROYECTO AMALFI  INTERIOR 3')">
+
+                <div class="img-wrap">
+
+                    <img src="./Fotos%20Proyectos/PROYECTO%20AMALFI-%20INTERIOR%203.png" loading="lazy" alt="PROYECTO AMALFI  INTERIOR 3">
+
+                </div>
+
+                <div class="info">
+
+                    <h4>PROYECTO AMALFI  INTERIOR 3</h4>
+
+                </div>
+
+            </div>
+
+                        <div class="gallery-card" onclick="openLightbox('/Fotos%20Proyectos/PROYECTO%20AMALFI-%20UNIFAMILIAR.png', 'PROYECTO AMALFI  UNIFAMILIAR')">
+
+                <div class="img-wrap">
+
+                    <img src="./Fotos%20Proyectos/PROYECTO%20AMALFI-%20UNIFAMILIAR.png" loading="lazy" alt="PROYECTO AMALFI  UNIFAMILIAR">
+
+                </div>
+
+                <div class="info">
+
+                    <h4>PROYECTO AMALFI  UNIFAMILIAR</h4>
+
+                </div>
+
+            </div>
+
+                        <div class="gallery-card" onclick="openLightbox('/Fotos%20Proyectos/PROYECTO%20BRISA%20-CASA%20DE%20PLAYA.png', 'PROYECTO BRISA  CASA DE PLAYA')">
+
+                <div class="img-wrap">
+
+                    <img src="./Fotos%20Proyectos/PROYECTO%20BRISA%20-CASA%20DE%20PLAYA.png" loading="lazy" alt="PROYECTO BRISA  CASA DE PLAYA">
+
+                </div>
+
+                <div class="info">
+
+                    <h4>PROYECTO BRISA  CASA DE PLAYA</h4>
+
+                </div>
+
+            </div>
+
+                        <div class="gallery-card" onclick="openLightbox('/Fotos%20Proyectos/PROYECTO%20BRISA%20-interior%201.png', 'PROYECTO BRISA  interior 1')">
+
+                <div class="img-wrap">
+
+                    <img src="./Fotos%20Proyectos/PROYECTO%20BRISA%20-interior%201.png" loading="lazy" alt="PROYECTO BRISA  interior 1">
+
+                </div>
+
+                <div class="info">
+
+                    <h4>PROYECTO BRISA  interior 1</h4>
+
+                </div>
+
+            </div>
+
+                        <div class="gallery-card" onclick="openLightbox('/Fotos%20Proyectos/PROYECTO%20CORAL%20-%20CASA%20DE%20PLAYA.png', 'PROYECTO CORAL   CASA DE PLAYA')">
+
+                <div class="img-wrap">
+
+                    <img src="./Fotos%20Proyectos/PROYECTO%20CORAL%20-%20CASA%20DE%20PLAYA.png" loading="lazy" alt="PROYECTO CORAL   CASA DE PLAYA">
+
+                </div>
+
+                <div class="info">
+
+                    <h4>PROYECTO CORAL   CASA DE PLAYA</h4>
+
+                </div>
+
+            </div>
+
+                        <div class="gallery-card" onclick="openLightbox('/Fotos%20Proyectos/PROYECTO%20CORAL%20-%20interior%201.png', 'PROYECTO CORAL   interior 1')">
+
+                <div class="img-wrap">
+
+                    <img src="./Fotos%20Proyectos/PROYECTO%20CORAL%20-%20interior%201.png" loading="lazy" alt="PROYECTO CORAL   interior 1">
+
+                </div>
+
+                <div class="info">
+
+                    <h4>PROYECTO CORAL   interior 1</h4>
+
+                </div>
+
+            </div>
+
+                        <div class="gallery-card" onclick="openLightbox('/Fotos%20Proyectos/PROYECTO%20LITUANIA%20-%20INTERIOR%203.png', 'PROYECTO LITUANIA   INTERIOR 3')">
+
+                <div class="img-wrap">
+
+                    <img src="./Fotos%20Proyectos/PROYECTO%20LITUANIA%20-%20INTERIOR%203.png" loading="lazy" alt="PROYECTO LITUANIA   INTERIOR 3">
+
+                </div>
+
+                <div class="info">
+
+                    <h4>PROYECTO LITUANIA   INTERIOR 3</h4>
+
+                </div>
+
+            </div>
+
+                        <div class="gallery-card" onclick="openLightbox('/Fotos%20Proyectos/PROYECTO%20LITUANIA-IINTERIOR%201.png', 'PROYECTO LITUANIA IINTERIOR 1')">
+
+                <div class="img-wrap">
+
+                    <img src="./Fotos%20Proyectos/PROYECTO%20LITUANIA-IINTERIOR%201.png" loading="lazy" alt="PROYECTO LITUANIA IINTERIOR 1">
+
+                </div>
+
+                <div class="info">
+
+                    <h4>PROYECTO LITUANIA IINTERIOR 1</h4>
+
+                </div>
+
+            </div>
+
+                        <div class="gallery-card" onclick="openLightbox('/Fotos%20Proyectos/PROYECTO%20LITUANIA-IINTERIOR%202.png', 'PROYECTO LITUANIA IINTERIOR 2')">
+
+                <div class="img-wrap">
+
+                    <img src="./Fotos%20Proyectos/PROYECTO%20LITUANIA-IINTERIOR%202.png" loading="lazy" alt="PROYECTO LITUANIA IINTERIOR 2">
+
+                </div>
+
+                <div class="info">
+
+                    <h4>PROYECTO LITUANIA IINTERIOR 2</h4>
+
+                </div>
+
+            </div>
+
+                        <div class="gallery-card" onclick="openLightbox('/Fotos%20Proyectos/PROYECTO%20LITUANIA-MULTIFAMILIAR.png', 'PROYECTO LITUANIA MULTIFAMILIAR')">
+
+                <div class="img-wrap">
+
+                    <img src="./Fotos%20Proyectos/PROYECTO%20LITUANIA-MULTIFAMILIAR.png" loading="lazy" alt="PROYECTO LITUANIA MULTIFAMILIAR">
+
+                </div>
+
+                <div class="info">
+
+                    <h4>PROYECTO LITUANIA MULTIFAMILIAR</h4>
+
+                </div>
+
+            </div>
+
+                        <div class="gallery-card" onclick="openLightbox('/Fotos%20Proyectos/PROYECTO%20MANHATAN%20-%20INTERIOR%201.png', 'PROYECTO MANHATAN   INTERIOR 1')">
+
+                <div class="img-wrap">
+
+                    <img src="./Fotos%20Proyectos/PROYECTO%20MANHATAN%20-%20INTERIOR%201.png" loading="lazy" alt="PROYECTO MANHATAN   INTERIOR 1">
+
+                </div>
+
+                <div class="info">
+
+                    <h4>PROYECTO MANHATAN   INTERIOR 1</h4>
+
+                </div>
+
+            </div>
+
+                        <div class="gallery-card" onclick="openLightbox('/Fotos%20Proyectos/PROYECTO%20MANHATAN%20-%20INTERIOR%202.png', 'PROYECTO MANHATAN   INTERIOR 2')">
+
+                <div class="img-wrap">
+
+                    <img src="./Fotos%20Proyectos/PROYECTO%20MANHATAN%20-%20INTERIOR%202.png" loading="lazy" alt="PROYECTO MANHATAN   INTERIOR 2">
+
+                </div>
+
+                <div class="info">
+
+                    <h4>PROYECTO MANHATAN   INTERIOR 2</h4>
+
+                </div>
+
+            </div>
+
+                        <div class="gallery-card" onclick="openLightbox('/Fotos%20Proyectos/PROYECTO%20MANHATAN-%20MULTIFAMILIAR.png', 'PROYECTO MANHATAN  MULTIFAMILIAR')">
+
+                <div class="img-wrap">
+
+                    <img src="./Fotos%20Proyectos/PROYECTO%20MANHATAN-%20MULTIFAMILIAR.png" loading="lazy" alt="PROYECTO MANHATAN  MULTIFAMILIAR">
+
+                </div>
+
+                <div class="info">
+
+                    <h4>PROYECTO MANHATAN  MULTIFAMILIAR</h4>
+
+                </div>
+
+            </div>
+
+                        <div class="gallery-card" onclick="openLightbox('/Fotos%20Proyectos/PROYECTO%20OLIVO%20-%20CASA%20DE%20CAMPO.png', 'PROYECTO OLIVO   CASA DE CAMPO')">
+
+                <div class="img-wrap">
+
+                    <img src="./Fotos%20Proyectos/PROYECTO%20OLIVO%20-%20CASA%20DE%20CAMPO.png" loading="lazy" alt="PROYECTO OLIVO   CASA DE CAMPO">
+
+                </div>
+
+                <div class="info">
+
+                    <h4>PROYECTO OLIVO   CASA DE CAMPO</h4>
+
+                </div>
+
+            </div>
+
+                        <div class="gallery-card" onclick="openLightbox('/Fotos%20Proyectos/PROYECTO%20OLIVO%20-%20INTERIOR%201.png', 'PROYECTO OLIVO   INTERIOR 1')">
+
+                <div class="img-wrap">
+
+                    <img src="./Fotos%20Proyectos/PROYECTO%20OLIVO%20-%20INTERIOR%201.png" loading="lazy" alt="PROYECTO OLIVO   INTERIOR 1">
+
+                </div>
+
+                <div class="info">
+
+                    <h4>PROYECTO OLIVO   INTERIOR 1</h4>
+
+                </div>
+
+            </div>
+
+                        <div class="gallery-card" onclick="openLightbox('/Fotos%20Proyectos/PROYECTO%20OLIVO%20-%20INTERIOR%202.png', 'PROYECTO OLIVO   INTERIOR 2')">
+
+                <div class="img-wrap">
+
+                    <img src="./Fotos%20Proyectos/PROYECTO%20OLIVO%20-%20INTERIOR%202.png" loading="lazy" alt="PROYECTO OLIVO   INTERIOR 2">
+
+                </div>
+
+                <div class="info">
+
+                    <h4>PROYECTO OLIVO   INTERIOR 2</h4>
+
+                </div>
+
+            </div>
+
+                        <div class="gallery-card" onclick="openLightbox('/Fotos%20Proyectos/PROYECTO%20OLIVO%20-%20INTERIOR%203.png', 'PROYECTO OLIVO   INTERIOR 3')">
+
+                <div class="img-wrap">
+
+                    <img src="./Fotos%20Proyectos/PROYECTO%20OLIVO%20-%20INTERIOR%203.png" loading="lazy" alt="PROYECTO OLIVO   INTERIOR 3">
+
+                </div>
+
+                <div class="info">
+
+                    <h4>PROYECTO OLIVO   INTERIOR 3</h4>
+
+                </div>
+
+            </div>
+
+                          </div>
+
+
+
+    </div>
+
+  </section>
+
+
+
+  <!-- Lightbox -->
+
+  <div class="lightbox" id="lightbox" onclick="if(event.target.tagName !== 'IMG') closeLightbox()">
+
+      <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+
+      <img id="lightbox-img" src="" alt="">
+
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+
+  </div>
+
+
+
+  <footer class="footer">
+
+    <div class="wrap">
+
+      <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:40px; margin-bottom:60px;">
+
+        <div style="max-width:350px;">
+
+          <div class="brand" style="margin-bottom:20px;">
+
+            <img src="./WhatsApp Image 2026-07-09 at 10.41.46 AM.png" alt="GRUPO VAD GOD ING'S" style="height:65px;">
+
+          </div>
+
+          <p style="color:rgba(250,248,244,.6); font-size:14px; line-height: 1.6;">Ingeniera civil, construccin y consultora tǸcnica orientada a la excelencia.</p>
+
+        </div>
+
+        <div style="display:flex; gap: 80px; flex-wrap:wrap;">
+
+          <div>
+
+            <h4 style="font-size:14px; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:20px; color:var(--gold);">Explorar</h4>
+
+            <ul style="color:rgba(250,248,244,.6); font-size:14px; display:flex; flex-direction:column; gap:10px; padding:0; list-style:none;">
+
+              <li><a href="index.html">Inicio</a></li>
+
+              <li><a href="nosotros.html">Nosotros</a></li>
+
+              <li><a href="index.html#contacto">Contacto</a></li>
+
+            </ul>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div style="border-top:1px solid rgba(255,255,255,0.1); padding-top:20px; text-align:center; font-size:12px; color:rgba(250,248,244,.4);">
+
+        <span>&copy; 2026 VADGOD INGS. Todos los derechos reservados.</span>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <script>
+
+    AOS.init({ once: false, offset: 50, duration: 800, mirror: true });
+
+    
+
+    // Navbar scroll
+
+    window.addEventListener('scroll', () => {
+
+      const nav = document.getElementById('siteNav');
+
+      if(window.scrollY > 50) {
+
+        nav.style.background = 'rgba(6, 19, 37, 0.95)';
+
+        nav.style.padding = '12px 0';
+
+      } else {
+
+        nav.style.background = 'rgba(6, 19, 37, 0.65)';
+
+        nav.style.padding = '22px 0';
+
+      }
+
+    });
+
+
+
+    // Lightbox
+
+    function openLightbox(url, caption) {
+
+        document.getElementById('lightbox-img').src = url;
+
+        document.getElementById('lightbox-caption').innerText = caption;
+
+        document.getElementById('lightbox').classList.add('active');
+
+        document.body.style.overflow = 'hidden';
+
+    }
+
+
+
+    function closeLightbox() {
+
+        document.getElementById('lightbox').classList.remove('active');
+
+        setTimeout(() => document.getElementById('lightbox-img').src = '', 300);
+
+        document.body.style.overflow = 'auto';
+
+    }
+
+    
+
+    // Esc para cerrar lightbox
+
+    document.addEventListener('keydown', function(event){
+
+        if(event.key === "Escape"){
+
+            closeLightbox();
+
+        }
+
+    });
+
+  </script>
+
+</body>
+
+</html>

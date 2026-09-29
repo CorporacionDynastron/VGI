@@ -1,0 +1,3487 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>VADGOD INGS — Ingeniería Civil, Planos & Construcción</title>
+
+<meta name="description" content="VADGOD INGS — Estudio de ingeniería civil en Ica, Perú: expediente técnico, construcción y capacitación de campo.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+<style>
+
+/* ==========================================================================
+
+   VADGOD INGS — sistema de diseño
+
+   Concepto: el sitio se lee como un EXPEDIENTE TÉCNICO — cada sección es una
+
+   "hoja" con su propio sello, escala y numeración, igual que un plano real.
+
+   Paleta original conservada (navy / gold / paper / concrete).
+
+   ========================================================================== */
+
+:root{
+
+  --navy:        #0a1f3d;
+
+  --navy-deep:   #061325;
+
+  --navy-light:  #16335e;
+
+  --gold:        #c9a227;
+
+  --gold-light:  #e3c468;
+
+  --paper:       #faf8f4;
+
+  --concrete:    #ece7dd;
+
+  --ink:         #161a1f;
+
+  --steel:       #7c8794;
+
+  --line:        rgba(10,31,61,.14);
+
+  --line-soft:   rgba(10,31,61,.07);
+
+  --ok:          #4caf7d;
+
+
+
+  --display: "Oswald", sans-serif;   /* títulos — trazo condensado, rotulado técnico */
+
+  --body:    "Inter", sans-serif;    /* lectura */
+
+  --mono:    "JetBrains Mono", monospace; /* SIEMPRE para datos: escalas, fechas, cotas, sellos */
+
+
+
+  --container: 1280px;
+
+  --gutter: clamp(20px, 4vw, 48px);
+
+  --radius-s: 3px;
+
+  --radius-m: 6px;
+
+  --ease: cubic-bezier(.16,.84,.44,1);
+
+}
+
+
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+html{ scroll-behavior:smooth; }
+
+@media (prefers-reduced-motion: reduce){
+
+  html{ scroll-behavior:auto; }
+
+  *,*::before,*::after{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important; }
+
+}
+
+body{
+
+  margin:0;
+
+  font-family:var(--body);
+
+  color:var(--ink);
+
+  background:var(--paper);
+
+  -webkit-font-smoothing:antialiased;
+
+  overflow-x:hidden;
+
+}
+
+img,svg{ display:block; max-width:100%; }
+
+a{ color:inherit; text-decoration:none; }
+
+ul{ list-style:none; margin:0; padding:0; }
+
+h1,h2,h3,h4{ margin:0; font-family:var(--display); font-weight:700; letter-spacing:.01em; }
+
+p{ margin:0; }
+
+button{ font-family:inherit; cursor:pointer; background:none; border:none; }
+
+.wrap{ max-width:var(--container); margin:0 auto; padding:0 var(--gutter); }
+
+:focus-visible{ outline:2px solid var(--gold); outline-offset:3px; }
+
+
+
+/* -- rótulo técnico: usado para toda etiqueta corta / dato / sello -- */
+
+.stamp{
+
+  font-family:var(--mono); font-size:11.5px; letter-spacing:.14em; text-transform:uppercase;
+
+  color:var(--gold); display:inline-flex; align-items:center; gap:10px;
+
+}
+
+.stamp::before{ content:""; width:20px; height:1px; background:var(--gold); flex-shrink:0; }
+
+.stamp.on-light{ color:var(--navy); }
+
+.stamp.on-light::before{ background:var(--navy); }
+
+
+
+/* -- marco de "hoja de plano" reutilizable: esquinas en escuadra -- */
+
+.sheet-frame{ position:relative; }
+
+.sheet-frame::before,
+
+.sheet-frame::after{
+
+  content:""; position:absolute; width:16px; height:16px; border:1.5px solid var(--gold); pointer-events:none;
+
+}
+
+.sheet-frame::before{ top:-1px; left:-1px; border-right:none; border-bottom:none; }
+
+.sheet-frame::after{ bottom:-1px; right:-1px; border-left:none; border-top:none; }
+
+
+
+/* ==========================================================================
+
+   NAV
+
+   ========================================================================== */
+
+header.nav{
+
+  position:fixed; inset:0 0 auto 0; z-index:200;
+
+  padding:20px 0;
+
+  background:rgba(6,19,37,.55);
+
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+
+  border-bottom:1px solid rgba(250,248,244,.08);
+
+  transition:padding .35s var(--ease), background .35s var(--ease), box-shadow .35s var(--ease);
+
+}
+
+header.nav.is-scrolled{ background:rgba(6,19,37,.94); padding:12px 0; box-shadow:0 12px 32px rgba(0,0,0,.28); }
+
+header.nav .wrap{ display:flex; align-items:center; justify-content:space-between; gap:24px; }
+
+
+
+.brand{ display:flex; align-items:center; gap:12px; min-width:0; }
+
+.brand img{ height:52px; width:auto; border-radius:var(--radius-s); flex-shrink:0; }
+
+.brand-text{
+
+  font-family:var(--display); font-weight:700; font-size:16.5px; color:var(--gold);
+
+  text-transform:uppercase; letter-spacing:.04em; line-height:1.15;
+
+}
+
+.brand-text small{
+
+  display:block; font-family:var(--mono); font-weight:400; font-size:9px; letter-spacing:.2em;
+
+  color:rgba(250,248,244,.55); margin-top:4px; text-transform:uppercase;
+
+}
+
+
+
+nav.links{ display:flex; align-items:center; gap:34px; }
+
+nav.links > a{ font-size:14px; font-weight:500; color:var(--paper); position:relative; padding:8px 0; }
+
+nav.links > a::after{
+
+  content:""; position:absolute; left:0; bottom:4px; height:1.5px; width:0; background:var(--gold);
+
+  transition:width .3s var(--ease);
+
+}
+
+nav.links > a:hover::after, nav.links .dropdown > a:hover::after{ width:100%; }
+
+
+
+.dropdown{ position:relative; }
+
+.dropdown > a { font-size:14px; font-weight:500; color:var(--paper); position:relative; padding:8px 0; text-decoration:none; display:flex; align-items:center; }
+
+.dropdown > a::after {
+
+  content:""; position:absolute; left:0; bottom:4px; height:1.5px; width:0; background:var(--gold);
+
+  transition:width .3s var(--ease);
+
+}
+
+.dropdown-menu{
+
+  position:absolute; top:calc(100% + 14px); left:50%; transform:translateX(-50%) translateY(10px);
+
+  min-width:260px; background:rgba(6,19,37,.92); padding:8px;
+
+  backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+
+  box-shadow:0 20px 45px rgba(0,0,0,.5);
+
+  border:1px solid rgba(250,248,244,.1); border-top:2px solid var(--gold);
+
+  border-radius:var(--radius-m);
+
+  opacity:0; visibility:hidden;
+
+  transition:opacity .25s var(--ease), transform .25s var(--ease), visibility .25s;
+
+  z-index:250;
+
+}
+
+.dropdown:hover .dropdown-menu,
+
+.dropdown:focus-within .dropdown-menu{ opacity:1; visibility:visible; transform:translateX(-50%) translateY(0); }
+
+.dropdown-menu a{
+
+  display:flex; align-items:center; gap:12px; padding:11px 14px; font-size:13.5px; border-radius:var(--radius-s);
+
+  transition:background .2s ease, transform .2s ease;
+
+  color:var(--paper); text-decoration:none;
+
+}
+
+.dropdown-menu a:hover{ background:rgba(201,162,39,.14); transform:translateX(4px); }
+
+.dropdown-menu a svg{ width:17px; height:17px; color:var(--gold); flex-shrink:0; }
+
+.dropdown-menu small{ display:block; font-size:11px; color:rgba(250,248,244,.5); margin-top:2px; font-weight:400; }
+
+
+
+.nav-actions{ display:flex; gap:10px; align-items:center; }
+
+.nav-cta{
+
+  font-family:var(--mono); font-size:12px; font-weight:500; letter-spacing:.05em; text-transform:uppercase;
+
+  padding:11px 18px; border:1px solid var(--gold); border-radius:var(--radius-s);
+
+  transition:background .22s ease, color .22s ease, transform .2s ease;
+
+}
+
+.nav-cta.solid{ background:var(--gold); color:var(--navy-deep); }
+
+.nav-cta.solid:hover{ background:transparent; color:var(--gold); transform:translateY(-1px); }
+
+.nav-cta.ghost{ color:var(--gold); }
+
+.nav-cta.ghost:hover{ background:rgba(201,162,39,.1); }
+
+
+
+.burger{ display:none; flex-direction:column; gap:5px; padding:8px; position:relative; z-index:300; }
+
+.burger span{ width:24px; height:2px; background:var(--paper); transition:transform .3s var(--ease), opacity .3s var(--ease); }
+
+.burger.is-open span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+
+.burger.is-open span:nth-child(2){ opacity:0; }
+
+.burger.is-open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+
+
+
+/* ==========================================================================
+
+   HERO
+
+   ========================================================================== */
+
+.hero{
+
+  position:relative; min-height:100vh; display:flex; align-items:center; overflow:hidden;
+
+  padding:140px 0 90px;
+
+  background:
+
+    radial-gradient(ellipse at 78% 14%, rgba(201,162,39,.16), transparent 46%),
+
+    linear-gradient(175deg, rgba(6,19,37,.9) 0%, rgba(10,31,61,.78) 55%, rgba(22,51,94,.72) 100%),
+
+    var(--navy-deep);
+
+}
+
+.hero-grid{
+
+  position:absolute; inset:0;
+
+  background-image:
+
+    linear-gradient(var(--line) 1px, transparent 1px),
+
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+
+  background-size:56px 56px; background-position:center;
+
+  opacity:.14;
+
+  mask-image:linear-gradient(180deg, transparent, black 22%, black 82%, transparent);
+
+}
+
+/* cotas / marcas de coordenadas — refuerzan el concepto de plano sin ser decorativas */
+
+.hero-coords{
+
+  position:absolute; inset:0; z-index:1; pointer-events:none;
+
+  font-family:var(--mono); font-size:10.5px; color:rgba(250,248,244,.32); letter-spacing:.06em;
+
+}
+
+.hero-coords span{ position:absolute; }
+
+.hero-coords .c1{ top:118px; left:var(--gutter); }
+
+.hero-coords .c2{ top:118px; right:var(--gutter); }
+
+.hero-coords .c3{ bottom:26px; right:var(--gutter); }
+
+
+
+.hero .wrap{ position:relative; z-index:2; display:grid; grid-template-columns:1.05fr .95fr; gap:48px; align-items:center; }
+
+
+
+.hero-copy .stamp{ margin-bottom:24px; }
+
+.hero-copy h1{
+
+  font-size:clamp(42px, 5.6vw, 78px); line-height:.98; color:var(--paper); text-transform:uppercase;
+
+}
+
+.hero-copy h1 em{ font-style:normal; color:var(--gold); display:block; }
+
+.hero-copy .lede{ margin-top:24px; max-width:480px; font-size:17px; line-height:1.65; color:rgba(250,248,244,.72); }
+
+
+
+.hero-actions{ margin-top:36px; display:flex; gap:14px; flex-wrap:wrap; }
+
+.btn{
+
+  display:inline-flex; align-items:center; gap:10px; padding:15px 26px; font-size:13.5px; font-weight:600;
+
+  letter-spacing:.03em; text-transform:uppercase; border:1px solid transparent; border-radius:var(--radius-s);
+
+  transition:transform .25s var(--ease), box-shadow .25s var(--ease), background .25s ease, color .25s ease, border-color .25s ease;
+
+}
+
+.btn-gold{ background:var(--gold); color:var(--navy-deep); }
+
+.btn-gold:hover{ transform:translateY(-2px); box-shadow:0 16px 32px -10px rgba(201,162,39,.55); }
+
+.btn-ghost{ border-color:rgba(250,248,244,.28); color:var(--paper); }
+
+.btn-ghost:hover{ border-color:var(--gold); color:var(--gold-light); transform:translateY(-2px); }
+
+.btn svg{ width:17px; height:17px; }
+
+
+
+/* franja de escala — reemplaza el bloque de stats "genérico" flotante */
+
+.hero-scale{
+
+  margin-top:56px; display:grid; grid-template-columns:repeat(3, auto); gap:44px;
+
+  padding-top:24px; border-top:1px solid rgba(250,248,244,.14); max-width:540px;
+
+}
+
+.hero-scale div{ font-family:var(--mono); }
+
+.hero-scale b{ display:block; color:var(--gold-light); font-size:26px; font-weight:600; line-height:1; }
+
+.hero-scale span{ display:block; margin-top:8px; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:rgba(250,248,244,.5); }
+
+
+
+/* -- ilustración: plano que se dibuja y "se construye" -- */
+
+.hero-art{ position:relative; }
+
+.hero-art .sheet-frame{ padding:20px; border:1px solid rgba(250,248,244,.16); background:rgba(250,248,244,.02); }
+
+.hero-art .label-tab{
+
+  position:absolute; left:0; bottom:-32px; font-family:var(--mono); font-size:10px; color:rgba(250,248,244,.55);
+
+  border:1px solid rgba(250,248,244,.18); padding:9px 13px; letter-spacing:.05em; display:flex; gap:16px;
+
+  background:rgba(6,19,37,.45); backdrop-filter:blur(4px); border-radius:var(--radius-s);
+
+}
+
+.hero-art .label-tab b{ color:var(--gold-light); font-weight:500; }
+
+
+
+#hero-svg .draft{
+
+  fill:none; stroke:rgba(250,248,244,.55); stroke-width:1.4;
+
+  stroke-dasharray:2400; stroke-dashoffset:2400; animation:draw 2.6s ease forwards .3s;
+
+}
+
+#hero-svg .built{
+
+  fill:var(--navy-light); stroke:var(--gold); stroke-width:1; opacity:0; transform-origin:bottom;
+
+  animation:rise 1.1s var(--ease) forwards 2.3s;
+
+}
+
+#hero-svg .gold-fill{ fill:var(--gold); opacity:0; animation:fadein .8s ease forwards 2.9s; }
+
+#hero-svg .crane-cable{
+
+  stroke:var(--gold-light); stroke-width:1; stroke-dasharray:200; stroke-dashoffset:200;
+
+  animation:draw 1s ease forwards 1s;
+
+}
+
+#hero-svg .blink{ animation:blink 1.8s ease-in-out infinite 3.3s; }
+
+@keyframes draw{ to{ stroke-dashoffset:0; } }
+
+@keyframes rise{ from{ opacity:0; transform:scaleY(.2); } to{ opacity:1; transform:scaleY(1); } }
+
+@keyframes fadein{ to{ opacity:1; } }
+
+@keyframes blink{ 0%,100%{ opacity:1; } 50%{ opacity:.25; } }
+
+
+
+.scroll-cue{
+
+  position:absolute; left:50%; bottom:24px; transform:translateX(-50%); z-index:2;
+
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+
+  font-family:var(--mono); font-size:10px; letter-spacing:.2em; color:rgba(250,248,244,.42);
+
+}
+
+.scroll-cue .line{ width:1px; height:32px; background:linear-gradient(rgba(250,248,244,.5), transparent); animation:scrollline 1.9s ease-in-out infinite; }
+
+@keyframes scrollline{
+
+  0%{ transform:scaleY(0); transform-origin:top; }
+
+  50%{ transform:scaleY(1); transform-origin:top; }
+
+  50.01%{ transform-origin:bottom; }
+
+  100%{ transform:scaleY(0); transform-origin:bottom; }
+
+}
+
+
+
+/* ==========================================================================
+
+   REVEAL
+
+   ========================================================================== */
+
+.reveal{ opacity:0; transform:translateY(24px); transition:opacity .8s ease, transform .8s ease; }
+
+.reveal.in{ opacity:1; transform:translateY(0); }
+
+
+
+/* ==========================================================================
+
+   ALIANZAS — marquesina
+
+   ========================================================================== */
+
+.alianzas{ background:var(--navy-deep); border-top:1px solid rgba(250,248,244,.1); padding:36px 0; overflow:hidden; }
+
+.alianzas-track{ display:flex; width:max-content; animation:marquee 42s linear infinite; }
+
+.alianzas-track:hover{ animation-play-state:paused; }
+
+.alianzas-set{ display:flex; align-items:center; gap:56px; padding-right:56px; }
+
+.alianza-item{ display:flex; align-items:center; gap:12px; flex-shrink:0; }
+
+.alianza-item img{ height:42px; max-width:130px; opacity:.75; transition:opacity .3s ease, transform .3s ease; }
+
+.alianza-item:hover img{ opacity:1; transform:scale(1.04); }
+
+.alianza-item .fallback-text{
+
+  font-family:var(--display); font-size:24px; font-weight:700; text-transform:uppercase; letter-spacing:.04em;
+
+  color:rgba(250,248,244,.9);
+
+}
+
+@keyframes marquee{ to{ transform:translateX(-50%); } }
+
+
+
+/* ==========================================================================
+
+   INFOGRAPHIC STATS
+
+   ========================================================================== */
+
+.infographic-stats { background:var(--navy-deep); padding:80px 0; border-top:1px solid rgba(250,248,244,.08); position:relative; overflow:hidden; }
+
+.infographic-stats::before { content:''; position:absolute; inset:0; background:radial-gradient(circle at center, rgba(199,161,90,0.03) 0%, transparent 70%); pointer-events:none; }
+
+.infographic-stats .wrap { display:grid; grid-template-columns:repeat(4,1fr); gap:30px; position:relative; z-index:2; }
+
+
+
+.stat-card { background:rgba(6,19,37,0.4); border:1px solid rgba(250,248,244,0.05); border-radius:16px; padding:40px 20px; display:flex; flex-direction:column; align-items:center; text-align:center; transition:transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease; position:relative; overflow:hidden; }
+
+.stat-card::before { content:''; position:absolute; top:0; left:0; right:0; height:100%; background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 20px 20px; opacity:0.3; z-index:0; }
+
+.stat-card:hover { transform:translateY(-10px); border-color:rgba(199,161,90,0.3); box-shadow:0 20px 40px rgba(0,0,0,0.4); }
+
+
+
+.stat-visual { position:relative; width:120px; height:120px; display:flex; align-items:center; justify-content:center; margin-bottom:24px; z-index:2; }
+
+.stat-visual svg { position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
+
+
+
+/* SVG Styles */
+
+.ring-bg, .bar, .net-link, .gauge-bg { fill:none; stroke:rgba(250,248,244,0.05); stroke-width:6; stroke-linecap:round; }
+
+.bar { fill:rgba(250,248,244,0.05); stroke:none; }
+
+.ring-fill { fill:none; stroke:var(--gold); stroke-width:6; stroke-linecap:round; transform:rotate(-90deg); transform-origin:50% 50%; transition:stroke-dashoffset 2s cubic-bezier(0.16, 1, 0.3, 1); }
+
+.trend-line { fill:none; stroke:var(--gold); stroke-width:3; stroke-linecap:round; stroke-linejoin:round; }
+
+.trend-dot { fill:var(--gold); }
+
+.bar-chart .bar:nth-child(3) { fill:rgba(199,161,90,0.2); }
+
+.net-link { stroke-width:2; stroke-dasharray:4 4; animation:dashMove 20s linear infinite; }
+
+.net-node { fill:var(--gold); }
+
+.gauge-fill { fill:none; stroke:var(--gold); stroke-width:6; stroke-linecap:round; transition:stroke-dashoffset 2s cubic-bezier(0.16, 1, 0.3, 1); }
+
+.gauge-pivot { fill:var(--gold); }
+
+.gauge-needle { stroke:var(--gold); stroke-width:3; stroke-linecap:round; transform-origin:50px 65px; transition:transform 2s cubic-bezier(0.16, 1, 0.3, 1); }
+
+
+
+@keyframes dashMove { to { stroke-dashoffset:-100; } }
+
+
+
+.stat-number { font-family:var(--display); font-weight:700; font-size:34px; color:var(--paper); z-index:2; position:relative; }
+
+.stat-label { font-family:var(--mono); font-size:11.5px; letter-spacing:0.1em; text-transform:uppercase; color:rgba(250,248,244,0.6); z-index:2; line-height:1.4; }
+
+
+
+/* ==========================================================================
+
+   SECCIÓN — encabezados comunes
+
+   ========================================================================== */
+
+section{ padding:clamp(80px, 9vw, 130px) 0; position:relative; }
+
+.sec-head{ max-width:640px; margin-bottom:60px; }
+
+.sec-head h2{ font-size:clamp(32px,3.6vw,48px); text-transform:uppercase; color:var(--navy); line-height:1.04; margin-top:16px; }
+
+.sec-head p{ margin-top:16px; font-size:16px; line-height:1.7; color:var(--steel); }
+
+.sec-head.on-dark h2{ color:var(--paper); }
+
+.sec-head.on-dark p{ color:rgba(250,248,244,.62); }
+
+
+
+/* ==========================================================================
+
+   SERVICIOS — expediente de tres hojas (secuencia real: diseño → obra → formación)
+
+   ========================================================================== */
+
+.servicios{ background:var(--paper); }
+
+.hoja-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+
+.hoja{
+
+  background:#fff; border:1px solid var(--line); border-radius:var(--radius-m); overflow:hidden;
+
+  display:flex; flex-direction:column; transition:border-color .3s ease, transform .3s ease, box-shadow .3s ease;
+
+}
+
+.hoja:hover{ border-color:var(--gold); transform:translateY(-4px); box-shadow:0 18px 34px rgba(10,31,61,.08); }
+
+.hoja-head{
+
+  display:flex; justify-content:space-between; align-items:center; padding:15px 24px;
+
+  background:var(--navy); font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; color:rgba(250,248,244,.7);
+
+}
+
+.hoja-head b{ color:var(--gold-light); font-weight:500; }
+
+.hoja-body{ padding:36px 28px 40px; flex:1; display:flex; flex-direction:column; }
+
+.hoja-num{ font-family:var(--mono); font-size:12.5px; color:var(--gold); margin-bottom:16px; }
+
+.hoja-body h3{ font-size:25px; color:var(--navy); text-transform:uppercase; margin-bottom:14px; }
+
+.hoja-body > p{ font-size:14.5px; line-height:1.75; color:var(--steel); margin-bottom:20px; }
+
+.hoja-list{ display:flex; flex-direction:column; gap:9px; margin-top:auto; }
+
+.hoja-list li{ font-size:13.5px; color:var(--ink); display:flex; align-items:baseline; gap:10px; }
+
+.hoja-list li::before{ content:"✔"; color:#4caf7d; font-weight:700; flex-shrink:0; margin-right:8px; font-size:14px; }
+
+  .hoja:hover .card-thumb{ transform:scale(1.1); }
+
+
+
+/* ==========================================================================
+
+   CAPACITACIONES
+
+   ========================================================================== */
+
+.capacitaciones{ background:var(--navy-deep); color:var(--paper); }
+
+.cap-grid{ display:grid; grid-template-columns:1.1fr 1fr 1fr; gap:1px; background:rgba(250,248,244,.12); border-radius:var(--radius-m); overflow:hidden; }
+
+.cap-card{ background:var(--navy-deep); padding:38px 32px; display:flex; flex-direction:column; }
+
+.cap-card.featured{ background:var(--navy-light); }
+
+.cap-level{ font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--gold-light); margin-bottom:16px; }
+
+.cap-card h4{ font-size:22px; text-transform:uppercase; margin-bottom:12px; }
+
+.cap-card p{ font-size:13.5px; line-height:1.7; color:rgba(250,248,244,.6); flex-grow:1; }
+
+.cap-foot{
+
+  margin-top:22px; display:flex; justify-content:space-between; align-items:center;
+
+  padding-top:16px; border-top:1px solid rgba(250,248,244,.14); font-family:var(--mono); font-size:11.5px;
+
+}
+
+.cap-foot a{ color:var(--gold); font-weight:500; display:flex; align-items:center; gap:6px; transition:color .2s ease; }
+
+.cap-foot a:hover{ color:var(--gold-light); }
+
+
+
+/* ==========================================================================
+
+   PROCESO — secuencia real de 4 etapas (numeración justificada)
+
+   ========================================================================== */
+
+.proceso{ background:var(--concrete); }
+
+.proc-track{ display:grid; grid-template-columns:repeat(4,1fr); position:relative; }
+
+.proc-track::before{
+
+  content:""; position:absolute; top:13px; left:0; right:0; height:1px;
+
+  background:repeating-linear-gradient(90deg, var(--steel) 0 8px, transparent 8px 16px); opacity:.5;
+
+}
+
+.proc-step{ padding-right:22px; position:relative; }
+
+.proc-step .num{
+
+  width:26px; height:26px; border-radius:50%; background:var(--navy); color:var(--gold-light);
+
+  font-family:var(--mono); font-size:11px; display:flex; align-items:center; justify-content:center;
+
+  position:relative; z-index:1; margin-bottom:22px;
+
+}
+
+.proc-step h4{ font-size:18px; color:var(--navy); text-transform:uppercase; margin-bottom:10px; }
+
+.proc-step p{ font-size:13.5px; line-height:1.65; color:var(--steel); }
+
+
+
+/* ==========================================================================
+
+   OBRAS — carrusel
+
+   ========================================================================== */
+
+.obras{ background:var(--paper); overflow:hidden; }
+
+.obras-swiper{ width:100%; padding:6px 0 50px; }
+
+.obra-card{
+
+  border:1px solid var(--line); background:#fff; border-radius:var(--radius-m); overflow:hidden;
+
+  box-shadow:0 6px 15px rgba(0,0,0,.04); transition:transform .4s var(--ease), box-shadow .4s var(--ease);
+
+  display:flex; flex-direction:column; height:100%;
+
+}
+
+.obra-card:hover{ transform:translateY(-6px); box-shadow:0 16px 32px rgba(0,0,0,.09); }
+
+.obra-art{ height:230px; position:relative; overflow:hidden; background:var(--navy); }
+
+.obra-art img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .6s ease; }
+
+.obra-card:hover .obra-art img{ transform:scale(1.07); }
+
+.obra-overlay{
+
+  position:absolute; inset:0; background:rgba(6,19,37,.4); opacity:0; transition:opacity .4s ease;
+
+  display:flex; align-items:center; justify-content:center;
+
+}
+
+.obra-card:hover .obra-overlay{ opacity:1; }
+
+.obra-btn{
+
+  background:var(--gold); color:var(--navy-deep); width:48px; height:48px; border-radius:50%;
+
+  display:flex; align-items:center; justify-content:center; transform:translateY(18px); opacity:0;
+
+  transition:all .4s var(--ease); box-shadow:0 4px 15px rgba(0,0,0,.2);
+
+}
+
+.obra-card:hover .obra-btn{ transform:translateY(0); opacity:1; transition-delay:.08s; }
+
+.obra-btn svg{ width:22px; height:22px; fill:none; stroke:currentColor; stroke-width:2; }
+
+.obra-tag{
+
+  position:absolute; top:14px; left:14px; z-index:2; font-family:var(--mono); font-size:10px;
+
+  letter-spacing:.1em; color:var(--navy-deep); background:var(--gold); padding:6px 11px;
+
+  text-transform:uppercase; border-radius:var(--radius-s);
+
+}
+
+.obra-info{ padding:24px 22px; }
+
+.obra-info .meta{ font-family:var(--mono); font-size:11px; color:var(--steel); letter-spacing:.06em; display:flex; justify-content:space-between; margin-bottom:10px; }
+
+.obra-info h4{ font-size:19px; color:var(--navy); line-height:1.3; }
+
+.swiper-pagination-obras,
+
+.swiper-pagination-noticias{ position:absolute; bottom:0; left:0; right:0; text-align:center; }
+
+.swiper-pagination-obras .swiper-pagination-bullet,
+
+.swiper-pagination-noticias .swiper-pagination-bullet{ background:var(--navy); opacity:.2; }
+
+.swiper-pagination-obras .swiper-pagination-bullet-active,
+
+.swiper-pagination-noticias .swiper-pagination-bullet-active{ background:var(--gold); opacity:1; }
+
+
+
+/* ==========================================================================
+
+   NOTICIAS
+
+   ========================================================================== */
+
+.noticias{ background:var(--concrete); overflow:hidden; }
+
+.noticias-swiper{ width:100%; padding:6px 0 40px; }
+
+.noticia-card{
+
+  border:1px solid var(--line); background:#fff; border-radius:var(--radius-m); overflow:hidden;
+
+  display:flex; flex-direction:column; height:100%; box-shadow:0 6px 15px rgba(0,0,0,.04);
+
+  transition:transform .4s var(--ease), box-shadow .4s var(--ease);
+
+}
+
+.noticia-card:hover{ transform:translateY(-6px); box-shadow:0 16px 32px rgba(0,0,0,.09); }
+
+.noticia-img{ height:200px; overflow:hidden; position:relative; }
+
+.noticia-img img{ width:100%; height:100%; object-fit:cover; transition:transform .6s ease; }
+
+.noticia-card:hover .noticia-img img{ transform:scale(1.07); }
+
+.noticia-info{ padding:24px; display:flex; flex-direction:column; flex-grow:1; }
+
+.noticia-date{ font-family:var(--mono); font-size:11px; color:var(--gold); margin-bottom:12px; letter-spacing:.05em; }
+
+.noticia-title{ font-size:17px; color:var(--navy); margin-bottom:12px; line-height:1.4; }
+
+.noticia-desc{ font-size:14px; color:var(--steel); line-height:1.6; margin-bottom:20px; flex-grow:1; }
+
+.noticia-link{
+
+  font-family:var(--mono); font-size:11.5px; color:var(--navy); font-weight:600; text-transform:uppercase;
+
+  margin-top:auto; display:flex; align-items:center; gap:6px; transition:color .3s ease;
+
+}
+
+.noticia-link:hover{ color:var(--gold); }
+
+
+
+/* ==========================================================================
+
+   TESTIMONIOS
+
+   ========================================================================== */
+
+.testimonios{ background:var(--paper); }
+
+.test-wrap{ display:grid; grid-template-columns:.8fr 1.2fr; gap:56px; align-items:center; }
+
+.test-quote{ font-family:var(--display); font-weight:600; font-size:clamp(22px,2.4vw,30px); color:var(--navy); line-height:1.32; }
+
+.test-quote span{ color:var(--gold); }
+
+.test-who{ margin-top:22px; font-family:var(--mono); font-size:12px; color:var(--steel); }
+
+.client-marks{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:var(--radius-m); overflow:hidden; }
+
+.client-mark{
+
+  background:var(--concrete); padding:26px 16px; text-align:center; font-family:var(--mono); font-size:12px;
+
+  letter-spacing:.06em; color:var(--steel); display:flex; align-items:center; justify-content:center; min-height:96px;
+
+}
+
+.client-mark img{ max-height:42px; max-width:130px; filter:grayscale(100%) opacity(.55); transition:filter .3s ease; }
+
+.client-mark:hover img{ filter:grayscale(0%) opacity(1); }
+
+
+
+/* ==========================================================================
+
+   FAQ
+
+   ========================================================================== */
+
+.faq{ background:var(--concrete); }
+
+.faq .sec-head{ text-align:center; margin:0 auto 46px; }
+
+.faq-list{ border-top:1px solid var(--line); max-width:780px; margin:0 auto; }
+
+.faq-item{ border-bottom:1px solid var(--line); }
+
+.faq-question{
+
+  width:100%; text-align:left; padding:24px 0; display:flex; justify-content:space-between; align-items:center;
+
+  gap:16px; font-family:var(--body); font-size:16.5px; font-weight:600; color:var(--navy);
+
+}
+
+.faq-question svg{ width:22px; height:22px; fill:var(--gold); flex-shrink:0; transition:transform .3s ease; }
+
+.faq-question[aria-expanded="true"] svg{ transform:rotate(180deg); }
+
+.faq-answer{ max-height:0; overflow:hidden; transition:max-height .4s ease, padding .4s ease; }
+
+.faq-answer p{ font-size:14.5px; line-height:1.7; color:var(--steel); padding-bottom:0; }
+
+.faq-item.is-active .faq-answer{ max-height:280px; padding-bottom:24px; }
+
+
+
+/* ==========================================================================
+
+   CONTACTO
+
+   ========================================================================== */
+
+.contacto{ background:var(--navy); color:var(--paper); }
+
+.contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-bottom:40px; }
+
+.contact-map-col { display:flex; flex-direction:column; border-radius:var(--radius-m); overflow:hidden; border:1px solid rgba(250,248,244,.1); position:relative; min-height:450px; }
+
+.map-frame { position:absolute; inset:0; width:100%; height:100%; filter: grayscale(80%) contrast(1.1) brightness(0.7) invert(0); transition: filter 0.3s ease; }
+
+.contact-map-col:hover .map-frame { filter: grayscale(0%) contrast(1) brightness(1); }
+
+
+
+.contact-info-col { display:flex; flex-direction:column; gap:30px; }
+
+.info-blocks { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+
+.info-item { display:flex; gap:14px; align-items:flex-start; }
+
+.info-item svg { width:24px; height:24px; color:var(--gold); flex-shrink:0; margin-top:2px; }
+
+.info-item dt { font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--gold-light); margin-bottom:4px; }
+
+.info-item dd { margin:0; font-size:14px; color:rgba(250,248,244,.85); line-height:1.4; }
+
+
+
+.contact-whats{
+
+  display:inline-flex; align-items:center; justify-content:center; gap:12px; padding:15px 24px;
+
+  background:#25D366; color:#fff; border-radius:var(--radius-s); font-family:var(--mono); font-size:14px; font-weight:600; text-transform:uppercase; letter-spacing:0.04em;
+
+  transition:transform .25s ease, box-shadow .25s ease, background .25s ease; width:100%; box-shadow:0 10px 30px rgba(37,211,102,0.3); text-decoration:none;
+
+}
+
+.contact-whats:hover{ transform:translateY(-3px); box-shadow:0 15px 40px rgba(37,211,102,0.4); background:#20bd5a; color:#fff; }
+
+.contact-whats svg{ width:22px; height:22px; fill:#fff; }
+
+
+
+form.cform{ display:grid; gap:16px; margin-top:10px; background:rgba(6,19,37,0.3); padding:24px; border-radius:var(--radius-m); border:1px solid rgba(250,248,244,0.05); }
+
+.cform .row2{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+
+.cform input,.cform textarea{
+
+  width:100%; background:rgba(255,255,255,0.03); border:1px solid rgba(250,248,244,.15); border-radius:var(--radius-s);
+
+  color:var(--paper); font-family:var(--body); font-size:14px; padding:12px 16px; transition:border-color .25s ease, background .25s ease;
+
+}
+
+.cform input:focus,.cform textarea:focus{ border-color:var(--gold); background:rgba(255,255,255,0.05); outline:none; }
+
+.cform textarea{ resize:vertical; min-height:80px; }
+
+.form-footer { display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; }
+
+.cform .submit{
+
+  background:var(--gold); color:var(--navy-deep); border-radius:var(--radius-s); border:none;
+
+  padding:12px 24px; font-size:13px; font-weight:600; letter-spacing:.03em; text-transform:uppercase;
+
+  transition:transform .25s ease, box-shadow .25s ease; cursor:pointer;
+
+}
+
+.cform .submit:hover{ transform:translateY(-2px); box-shadow:0 10px 20px rgba(201,162,39,.3); }
+
+.form-note{ font-family:var(--mono); font-size:11px; color:rgba(250,248,244,.45); margin:0; }
+
+
+
+/* ==========================================================================
+
+   FOOTER
+
+   ========================================================================== */
+
+footer{ background:var(--navy-deep); color:rgba(250,248,244,.6); padding:52px 0 30px; border-top:1px solid rgba(201,162,39,.25); }
+
+.foot-top{ display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:40px; padding-bottom:36px; border-bottom:1px solid rgba(250,248,244,.1); }
+
+.foot-brand{ max-width:340px; }
+
+.foot-brand .brand{ margin-bottom:18px; }
+
+.foot-brand p{ font-size:13.5px; line-height:1.65; color:rgba(250,248,244,.6); }
+
+.foot-links{ display:flex; gap:80px; flex-wrap:wrap; }
+
+.foot-col h5{ font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--gold-light); margin-bottom:14px; }
+
+.foot-col a{ display:block; font-size:13.5px; margin-bottom:9px; color:rgba(250,248,244,.62); }
+
+.foot-col a:hover{ color:var(--gold-light); }
+
+.foot-reclamo img{ height:52px; width:auto; border-radius:var(--radius-s); box-shadow:0 2px 8px rgba(0,0,0,.2); transition:transform .3s ease; }
+
+.foot-reclamo:hover img{ transform:scale(1.05); }
+
+.foot-bottom{ display:flex; justify-content:space-between; align-items:center; padding-top:22px; font-family:var(--mono); font-size:11px; flex-wrap:wrap; gap:10px; color:rgba(250,248,244,.4); }
+
+.foot-social{ display:flex; gap:12px; align-items:center; }
+
+.foot-social a svg{ transition:color .2s ease; }
+
+.foot-social a:hover svg{ color:var(--gold-light); }
+
+
+
+/* ==========================================================================
+
+   WHATSAPP FLOTANTE
+
+   ========================================================================== */
+
+.wa-floats{ position:fixed; bottom:26px; right:26px; z-index:999; display:flex; flex-direction:column; gap:10px; }
+
+.wa-float{
+
+  position:relative; width:58px; height:58px; border-radius:50%; background:#25D366;
+
+  display:flex; align-items:center; justify-content:center; box-shadow:0 10px 26px rgba(0,0,0,.3);
+
+  transition:transform .25s ease;
+
+}
+
+.wa-float:hover{ transform:scale(1.08); }
+
+.wa-float svg{ width:28px; height:28px; fill:#fff; }
+
+.wa-float::before{
+
+  content:""; position:absolute; inset:0; border-radius:50%; background:#25D366; z-index:-1;
+
+  animation:pulse 2.2s ease-out infinite;
+
+}
+
+@keyframes pulse{ 0%{ transform:scale(1); opacity:.55; } 100%{ transform:scale(1.9); opacity:0; } }
+
+
+
+/* ==========================================================================
+
+   NOSOTROS (equipo) — usado si la sección se referencia desde el footer/nav
+
+   ========================================================================== */
+
+.nosotros{ background:var(--paper); }
+
+.team-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
+
+.team-card{ background:#fff; border:1px solid var(--line); border-radius:var(--radius-m); overflow:hidden; }
+
+.team-card img{ width:100%; height:300px; object-fit:cover; filter:grayscale(100%); transition:transform .4s ease, filter .4s ease; }
+
+.team-card:hover img{ filter:grayscale(0%); transform:scale(1.03); }
+
+.team-info{ padding:22px; }
+
+.team-info h4{ font-size:19px; color:var(--navy); text-transform:uppercase; margin-bottom:4px; }
+
+.team-info span{ font-family:var(--mono); font-size:11px; color:var(--steel); letter-spacing:.06em; }
+
+
+
+/* ==========================================================================
+
+   RESPONSIVE
+
+   ========================================================================== */
+
+@media (max-width:980px){
+
+  nav.links,.nav-actions .nav-cta.ghost{ display:none; }
+
+  nav.links.is-open{
+
+    display:flex; flex-direction:column; position:fixed; top:0; right:0; bottom:0; width:76%;
+
+    background:var(--navy-deep); padding:100px 34px; gap:26px; z-index:250; box-shadow:-10px 0 30px rgba(0,0,0,.5);
+
+  }
+
+  .burger{ display:flex; }
+
+  .contact-grid { grid-template-columns:1fr; gap:40px; }
+
+  .contact-map-col { min-height:350px; }
+
+  .info-blocks { grid-template-columns:1fr; }
+
+  .cform .row2{ grid-template-columns:1fr; }
+
+  .hero .wrap{ grid-template-columns:1fr; }
+
+  .hero-art{ display:none; }
+
+  .hero-coords{ display:none; }
+
+  .infographic-stats .wrap{ grid-template-columns:repeat(2,1fr); }
+
+  .hoja-grid{ grid-template-columns:1fr; }
+
+  .proc-track{ grid-template-columns:repeat(2,1fr); row-gap:34px; }
+
+  .proc-track::before{ display:none; }
+
+  .cap-grid{ grid-template-columns:1fr; }
+
+  .test-wrap{ grid-template-columns:1fr; gap:34px; }
+
+  .team-grid{ grid-template-columns:repeat(2,1fr); }
+
+  .contact-wrap{ grid-template-columns:1fr; gap:42px; }
+
+}
+
+@media (max-width:620px){
+
+  section{ padding:70px 0; }
+
+  .infographic-stats .wrap{ grid-template-columns:1fr; }
+
+  .client-marks{ grid-template-columns:repeat(2,1fr); }
+
+  .team-grid{ grid-template-columns:1fr; }
+
+  .foot-top{ flex-direction:column; }
+
+  .foot-links{ gap:30px; }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+
+<!-- ==========================================================================
+
+     NAV
+
+========================================================================== -->
+
+<header class="nav" id="siteNav">
+
+  <div class="wrap">
+
+    <a href="index.html" class="brand">
+
+      <img src="./WhatsApp Image 2026-07-09 at 10.41.46 AM.png" alt="GRUPO VAD GOD ING'S" style="height:70px; width:auto; filter: drop-shadow(0px 4px 18px rgba(201, 162, 39, 0.4)) drop-shadow(0px 2px 4px rgba(0,0,0,0.6)); transition: filter 0.3s ease, transform 0.3s ease;" onmouseover="this.style.filter='drop-shadow(0px 4px 22px rgba(201, 162, 39, 0.7)) drop-shadow(0px 2px 4px rgba(0,0,0,0.6))'; this.style.transform='scale(1.03)'" onmouseout="this.style.filter='drop-shadow(0px 4px 18px rgba(201, 162, 39, 0.4)) drop-shadow(0px 2px 4px rgba(0,0,0,0.6))'; this.style.transform='scale(1)'">
+
+      <span class="brand-text">Grupo Vad God Ing´s<small>Ingeniería civil &amp; construcción</small></span>
+
+    </a>
+
+
+
+    <nav class="links" id="navLinks">
+
+      <a href="index.html">Inicio</a>
+
+      <a href="#servicios">Servicios</a>
+
+      <a href="#obras">Obras</a>
+
+      <div class="dropdown">
+
+        <a href="nosotros.html">
+
+          Nosotros
+
+          <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13" style="display:inline-block; vertical-align:middle; margin-left:3px;"><path d="M7 10l5 5 5-5z"/></svg>
+
+        </a>
+
+        <div class="dropdown-menu">
+
+          <a href="nosotros.html#historia">
+
+            <svg width="17" height="17" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+
+            <div><span>Nuestra historia</span><small>Conoce nuestros orígenes</small></div>
+
+          </a>
+
+          <a href="nosotros.html#mision">
+
+            <svg width="17" height="17" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+
+            <div><span>Misión y visión</span><small>Hacia dónde nos dirigimos</small></div>
+
+          </a>
+
+          <a href="nosotros.html#equipo">
+
+            <svg width="17" height="17" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+
+            <div><span>El equipo</span><small>Nuestros profesionales</small></div>
+
+          </a>
+
+        </div>
+
+      </div>
+
+      <a href="#contacto">Contacto</a>
+
+    </nav>
+
+
+
+    <div class="nav-actions">
+
+      
+
+      <a href="#contacto" class="nav-cta solid">Solicitar cotización</a>
+
+    </div>
+
+
+
+    <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks">
+
+      <span></span><span></span><span></span>
+
+    </button>
+
+  </div>
+
+</header>
+
+
+
+<!-- ==========================================================================
+
+     HERO
+
+========================================================================== -->
+
+<section class="hero" id="top">
+
+  <div class="hero-grid"></div>
+
+  <div class="hero-coords" aria-hidden="true">
+
+    <span class="c1">LAT -12.0602 / LON -77.1084</span>
+
+    <span class="c2">EXP. TÉCNICO N° 001</span>
+
+    <span class="c3">ESC. 1:100 — REV. 03</span>
+
+  </div>
+
+
+
+  <div class="swiper main-hero-swiper" style="position:absolute; inset:0; z-index:1;">
+
+      <div class="swiper-wrapper">
+
+
+
+        <div class="swiper-slide" style="position:relative;">
+
+          <img src="./01.%20RECREACION-%20NACIONES%20UNIDAS%2C%20%20SAN%20ANDRES%2C%20PISCO/IMAGEN%201.png" alt="Parque Naciones Unidas" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.4;">
+
+          <div class="wrap" style="position:relative; z-index:2; height:100%; display:flex; align-items:center;">
+
+            <div class="hero-copy" style="max-width:850px; padding-top:40px;">
+
+              <h1 style="font-size:clamp(40px,5.4vw,65px); line-height:1; color:var(--paper); text-transform:uppercase; text-shadow:0 4px 20px rgba(0,0,0,.5); margin-bottom: 20px;">Parque Naciones Unidas</h1>
+
+              <p class="lede" style="color:#fff; text-shadow:0 2px 15px rgba(0,0,0,.8); font-size:18px; line-height: 1.6; max-width: 750px;">Recuperación de espacios públicos en San Andrés, Pisco. Ejecución de losas deportivas, áreas verdes y zonas de recreación con estrictos estándares de seguridad.</p>
+
+              <div class="hero-actions" style="margin-top:35px;">
+
+                <a href="#obras" class="btn btn-gold">EXPLORA ALGUNAS DE NUESTRAS OBRAS</a>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+    
+
+        <div class="swiper-slide" style="position:relative;">
+
+          <img src="./01.%20RECREACION-%20NACIONES%20UNIDAS%2C%20%20SAN%20ANDRES%2C%20PISCO/IMAGEN%204.png" alt="Infraestructura Recreativa" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.4;">
+
+          <div class="wrap" style="position:relative; z-index:2; height:100%; display:flex; align-items:center;">
+
+            <div class="hero-copy" style="max-width:850px; padding-top:40px;">
+
+              <h1 style="font-size:clamp(40px,5.4vw,65px); line-height:1; color:var(--paper); text-transform:uppercase; text-shadow:0 4px 20px rgba(0,0,0,.5); margin-bottom: 20px;">Infraestructura Recreativa</h1>
+
+              <p class="lede" style="color:#fff; text-shadow:0 2px 15px rgba(0,0,0,.8); font-size:18px; line-height: 1.6; max-width: 750px;">Creación de zonas de esparcimiento seguras para la comunidad. Instalación de mobiliario urbano, iluminación y paisajismo integral entregados a tiempo.</p>
+
+              <div class="hero-actions" style="margin-top:35px;">
+
+                <a href="#obras" class="btn btn-gold">EXPLORA ALGUNAS DE NUESTRAS OBRAS</a>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+    
+
+        <div class="swiper-slide" style="position:relative;">
+
+          <img src="./01.%20RECREACION-%20NACIONES%20UNIDAS%2C%20%20SAN%20ANDRES%2C%20PISCO/IMAGEN%208.png" alt="Proyecto Recreacional Pisco" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.4;">
+
+          <div class="wrap" style="position:relative; z-index:2; height:100%; display:flex; align-items:center;">
+
+            <div class="hero-copy" style="max-width:850px; padding-top:40px;">
+
+              <h1 style="font-size:clamp(40px,5.4vw,65px); line-height:1; color:var(--paper); text-transform:uppercase; text-shadow:0 4px 20px rgba(0,0,0,.5); margin-bottom: 20px;">Proyecto Recreacional Pisco</h1>
+
+              <p class="lede" style="color:#fff; text-shadow:0 2px 15px rgba(0,0,0,.8); font-size:18px; line-height: 1.6; max-width: 750px;">Desarrollo urbano pensado en el bienestar. Construcción de veredas internas, sardineles y estructuras metálicas garantizando durabilidad y estética.</p>
+
+              <div class="hero-actions" style="margin-top:35px;">
+
+                <a href="#obras" class="btn btn-gold">EXPLORA ALGUNAS DE NUESTRAS OBRAS</a>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+    
+
+        <div class="swiper-slide" style="position:relative;">
+
+          <img src="./01.%20RECREACION-%20NACIONES%20UNIDAS%2C%20%20SAN%20ANDRES%2C%20PISCO/IMAGEN%2012.png" alt="Espacios Públicos de Calidad" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.4;">
+
+          <div class="wrap" style="position:relative; z-index:2; height:100%; display:flex; align-items:center;">
+
+            <div class="hero-copy" style="max-width:850px; padding-top:40px;">
+
+              <h1 style="font-size:clamp(40px,5.4vw,65px); line-height:1; color:var(--paper); text-transform:uppercase; text-shadow:0 4px 20px rgba(0,0,0,.5); margin-bottom: 20px;">Espacios Públicos de Calidad</h1>
+
+              <p class="lede" style="color:#fff; text-shadow:0 2px 15px rgba(0,0,0,.8); font-size:18px; line-height: 1.6; max-width: 750px;">Obra de modernización urbana finalizada con éxito. Aportamos ingeniería y compromiso para transformar el entorno y mejorar la calidad de vida comunitaria.</p>
+
+              <div class="hero-actions" style="margin-top:35px;">
+
+                <a href="#obras" class="btn btn-gold">EXPLORA ALGUNAS DE NUESTRAS OBRAS</a>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+    
+
+        <div class="swiper-slide" style="position:relative;">
+
+          <img src="./02.%20PISTAS%20Y%20VEREDAS-%20CA%C3%91ETE.%20LIMA/IMAGEN%201.png" alt="Pavimentación en Cañete" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.4;">
+
+          <div class="wrap" style="position:relative; z-index:2; height:100%; display:flex; align-items:center;">
+
+            <div class="hero-copy" style="max-width:850px; padding-top:40px;">
+
+              <h1 style="font-size:clamp(40px,5.4vw,65px); line-height:1; color:var(--paper); text-transform:uppercase; text-shadow:0 4px 20px rgba(0,0,0,.5); margin-bottom: 20px;">Pavimentación en Cañete</h1>
+
+              <p class="lede" style="color:#fff; text-shadow:0 2px 15px rgba(0,0,0,.8); font-size:18px; line-height: 1.6; max-width: 750px;">Ejecución de pistas y veredas de concreto. Movimiento de tierras, compactación y vaciado con maquinaria especializada para garantizar resistencia al alto tránsito.</p>
+
+              <div class="hero-actions" style="margin-top:35px;">
+
+                <a href="#obras" class="btn btn-gold">EXPLORA ALGUNAS DE NUESTRAS OBRAS</a>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+    
+
+        <div class="swiper-slide" style="position:relative;">
+
+          <img src="./02.%20PISTAS%20Y%20VEREDAS-%20CA%C3%91ETE.%20LIMA/IMAGEN%205.png" alt="Infraestructura Vial Lima" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.4;">
+
+          <div class="wrap" style="position:relative; z-index:2; height:100%; display:flex; align-items:center;">
+
+            <div class="hero-copy" style="max-width:850px; padding-top:40px;">
+
+              <h1 style="font-size:clamp(40px,5.4vw,65px); line-height:1; color:var(--paper); text-transform:uppercase; text-shadow:0 4px 20px rgba(0,0,0,.5); margin-bottom: 20px;">Infraestructura Vial Lima</h1>
+
+              <p class="lede" style="color:#fff; text-shadow:0 2px 15px rgba(0,0,0,.8); font-size:18px; line-height: 1.6; max-width: 750px;">Modernización de vías urbanas. Construcción de veredas, rampas de accesibilidad y sardineles peatonales cumpliendo con la normativa técnica vigente.</p>
+
+              <div class="hero-actions" style="margin-top:35px;">
+
+                <a href="#obras" class="btn btn-gold">EXPLORA ALGUNAS DE NUESTRAS OBRAS</a>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+    
+
+        <div class="swiper-slide" style="position:relative;">
+
+          <img src="./02.%20PISTAS%20Y%20VEREDAS-%20CA%C3%91ETE.%20LIMA/IMAGEN%2010.png" alt="Obras de Tránsito Peatonal" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.4;">
+
+          <div class="wrap" style="position:relative; z-index:2; height:100%; display:flex; align-items:center;">
+
+            <div class="hero-copy" style="max-width:850px; padding-top:40px;">
+
+              <h1 style="font-size:clamp(40px,5.4vw,65px); line-height:1; color:var(--paper); text-transform:uppercase; text-shadow:0 4px 20px rgba(0,0,0,.5); margin-bottom: 20px;">Obras de Tránsito Peatonal</h1>
+
+              <p class="lede" style="color:#fff; text-shadow:0 2px 15px rgba(0,0,0,.8); font-size:18px; line-height: 1.6; max-width: 750px;">Mejoramiento integral del ornato público en Cañete. Trabajos de ingeniería civil enfocados en la durabilidad del pavimento y seguridad peatonal máxima.</p>
+
+              <div class="hero-actions" style="margin-top:35px;">
+
+                <a href="#obras" class="btn btn-gold">EXPLORA ALGUNAS DE NUESTRAS OBRAS</a>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+    
+
+        <div class="swiper-slide" style="position:relative;">
+
+          <img src="./03.%20MANTENIMIENTO-%20PISCO/IMAGEN%201.png" alt="Mantenimiento Estructural Pisco" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.4;">
+
+          <div class="wrap" style="position:relative; z-index:2; height:100%; display:flex; align-items:center;">
+
+            <div class="hero-copy" style="max-width:850px; padding-top:40px;">
+
+              <h1 style="font-size:clamp(40px,5.4vw,65px); line-height:1; color:var(--paper); text-transform:uppercase; text-shadow:0 4px 20px rgba(0,0,0,.5); margin-bottom: 20px;">Mantenimiento Estructural Pisco</h1>
+
+              <p class="lede" style="color:#fff; text-shadow:0 2px 15px rgba(0,0,0,.8); font-size:18px; line-height: 1.6; max-width: 750px;">Servicios integrales de mantenimiento preventivo y correctivo en infraestructuras. Preservamos la integridad de las obras con soluciones técnicas precisas.</p>
+
+              <div class="hero-actions" style="margin-top:35px;">
+
+                <a href="#obras" class="btn btn-gold">EXPLORA ALGUNAS DE NUESTRAS OBRAS</a>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+    
+
+        <div class="swiper-slide" style="position:relative;">
+
+          <img src="./03.%20MANTENIMIENTO-%20PISCO/IMAGEN%205.png" alt="Rehabilitación de Obras" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.4;">
+
+          <div class="wrap" style="position:relative; z-index:2; height:100%; display:flex; align-items:center;">
+
+            <div class="hero-copy" style="max-width:850px; padding-top:40px;">
+
+              <h1 style="font-size:clamp(40px,5.4vw,65px); line-height:1; color:var(--paper); text-transform:uppercase; text-shadow:0 4px 20px rgba(0,0,0,.5); margin-bottom: 20px;">Rehabilitación de Obras</h1>
+
+              <p class="lede" style="color:#fff; text-shadow:0 2px 15px rgba(0,0,0,.8); font-size:18px; line-height: 1.6; max-width: 750px;">Evaluación y restauración de superficies y estructuras. Nuestro equipo técnico garantiza la extensión de la vida útil de edificaciones e instalaciones civiles.</p>
+
+              <div class="hero-actions" style="margin-top:35px;">
+
+                <a href="#obras" class="btn btn-gold">EXPLORA ALGUNAS DE NUESTRAS OBRAS</a>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+    
+
+        <div class="swiper-slide" style="position:relative;">
+
+          <img src="./03.%20MANTENIMIENTO-%20PISCO/IMAGEN%209.png" alt="Gestión de Mantenimiento" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.4;">
+
+          <div class="wrap" style="position:relative; z-index:2; height:100%; display:flex; align-items:center;">
+
+            <div class="hero-copy" style="max-width:850px; padding-top:40px;">
+
+              <h1 style="font-size:clamp(40px,5.4vw,65px); line-height:1; color:var(--paper); text-transform:uppercase; text-shadow:0 4px 20px rgba(0,0,0,.5); margin-bottom: 20px;">Gestión de Mantenimiento</h1>
+
+              <p class="lede" style="color:#fff; text-shadow:0 2px 15px rgba(0,0,0,.8); font-size:18px; line-height: 1.6; max-width: 750px;">Intervención rápida y eficaz para la conservación de la infraestructura local. Aplicación de recubrimientos y reparaciones bajo riguroso control de calidad.</p>
+
+              <div class="hero-actions" style="margin-top:35px;">
+
+                <a href="#obras" class="btn btn-gold">EXPLORA ALGUNAS DE NUESTRAS OBRAS</a>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+    
+
+      </div>
+
+      <div class="swiper-pagination"></div>
+
+    </div>
+
+
+
+    <div class="scroll-cue"><span>Bajar</span><span class="line"></span></div>
+
+</section>
+
+
+
+<!-- ==========================================================================
+
+     ALIANZAS / CERTIFICACIONES
+
+========================================================================== -->
+
+<section class="alianzas">
+
+  <div class="wrap" style="padding:0; overflow:hidden;">
+
+    <div class="alianzas-track" data-aos="fade-up">
+
+            <div class="alianzas-set">
+
+                <div class="alianza-item">
+
+                    <img src="./storage/aliados/Zlx9PTNbfzQnLo5gGgzXrPj3DrHB1Ksu0GuTLS9N.jpg" alt="ISO 37001">
+
+                    <span class="fallback-text">ISO 37001</span>
+
+        </div>
+
+                <div class="alianza-item">
+
+                    <img src="./storage/aliados/zEyex57sHhCsE7CaJ0HKFFfJctKOFXFJ28E6HFUe.webp" alt="ISO 14001">
+
+                    <span class="fallback-text">ISO 14001</span>
+
+        </div>
+
+                <div class="alianza-item">
+
+                    <img src="./storage/aliados/fvKaovpp4p243ZJGkNfqN83l58BVEFS0TtlDmzGb.webp" alt="ISO 9001">
+
+                    <span class="fallback-text">ISO 9001</span>
+
+        </div>
+
+                <div class="alianza-item">
+
+                    <img src="./storage/aliados/LMN5XwB1iqhkAyeNHaMfh49tkENleczk6PfvIrD4.webp" alt="ISO 14001">
+
+                    <span class="fallback-text">ISO 14001</span>
+
+        </div>
+
+                <div class="alianza-item">
+
+                    <img src="./storage/aliados/NOVsTFA7NHgob7VYxW0tebRRr52GCNbqBie1Dx2i.png" alt="ISO 45001">
+
+                    <span class="fallback-text">ISO 45001</span>
+
+        </div>
+
+                <div class="alianza-item">
+
+                    <img src="./storage/aliados/rVe1f7nhZHb2CaJWpPnSWbWVJNM5tUAdSuh129Xt.png" alt="CIP">
+
+                    <span class="fallback-text">CIP</span>
+
+        </div>
+
+                <div class="alianza-item">
+
+                    <img src="./storage/aliados/B2n8FligcJ4lRvHA18tVng60HSENL2yKFHbjNIus.webp" alt="ACEROS">
+
+                    <span class="fallback-text">ACEROS</span>
+
+        </div>
+
+              </div>
+
+            <div class="alianzas-set">
+
+                <div class="alianza-item">
+
+                    <img src="./storage/aliados/Zlx9PTNbfzQnLo5gGgzXrPj3DrHB1Ksu0GuTLS9N.jpg" alt="ISO 37001">
+
+                    <span class="fallback-text">ISO 37001</span>
+
+        </div>
+
+                <div class="alianza-item">
+
+                    <img src="./storage/aliados/zEyex57sHhCsE7CaJ0HKFFfJctKOFXFJ28E6HFUe.webp" alt="ISO 14001">
+
+                    <span class="fallback-text">ISO 14001</span>
+
+        </div>
+
+                <div class="alianza-item">
+
+                    <img src="./storage/aliados/fvKaovpp4p243ZJGkNfqN83l58BVEFS0TtlDmzGb.webp" alt="ISO 9001">
+
+                    <span class="fallback-text">ISO 9001</span>
+
+        </div>
+
+                <div class="alianza-item">
+
+                    <img src="./storage/aliados/LMN5XwB1iqhkAyeNHaMfh49tkENleczk6PfvIrD4.webp" alt="ISO 14001">
+
+                    <span class="fallback-text">ISO 14001</span>
+
+        </div>
+
+                <div class="alianza-item">
+
+                    <img src="./storage/aliados/NOVsTFA7NHgob7VYxW0tebRRr52GCNbqBie1Dx2i.png" alt="ISO 45001">
+
+                    <span class="fallback-text">ISO 45001</span>
+
+        </div>
+
+                <div class="alianza-item">
+
+                    <img src="./storage/aliados/rVe1f7nhZHb2CaJWpPnSWbWVJNM5tUAdSuh129Xt.png" alt="CIP">
+
+                    <span class="fallback-text">CIP</span>
+
+        </div>
+
+                <div class="alianza-item">
+
+                    <img src="./storage/aliados/B2n8FligcJ4lRvHA18tVng60HSENL2yKFHbjNIus.webp" alt="ACEROS">
+
+                    <span class="fallback-text">ACEROS</span>
+
+        </div>
+
+              </div>
+
+          </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ==========================================================================
+
+     INFOGRAPHIC STATS
+
+========================================================================== -->
+
+<section class="infographic-stats">
+
+  <div class="wrap">
+
+    
+
+    <!-- Stat 1: Años de experiencia (Progress Ring) -->
+
+    <div class="stat-card" data-aos="fade-up" data-aos-delay="0">
+
+      <div class="stat-visual">
+
+        <svg viewBox="0 0 100 100" class="progress-ring">
+
+          <circle class="ring-bg" cx="50" cy="50" r="45"></circle>
+
+          <circle class="ring-fill" cx="50" cy="50" r="45" style="stroke-dasharray: 283; stroke-dashoffset: 56;"></circle>
+
+        </svg>
+
+        <div class="stat-number"><b data-count="8" data-suffix="+">0</b></div>
+
+      </div>
+
+      <div class="stat-label">Años de experiencia</div>
+
+    </div>
+
+
+
+    <!-- Stat 2: Clientes atendidos (Bar Chart) -->
+
+    <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="stat-visual">
+
+        <svg viewBox="0 0 100 100" class="bar-chart">
+
+          <rect class="bar" x="15" y="60" width="16" height="30" rx="4" />
+
+          <rect class="bar" x="42" y="40" width="16" height="50" rx="4" />
+
+          <rect class="bar" x="69" y="20" width="16" height="70" rx="4" />
+
+          <path class="trend-line" d="M 23 50 L 50 30 L 77 10" />
+
+          <circle class="trend-dot" cx="77" cy="10" r="4" />
+
+        </svg>
+
+        <div class="stat-number"><b data-count="1100" data-suffix="+">0</b></div>
+
+      </div>
+
+      <div class="stat-label">Clientes atendidos</div>
+
+    </div>
+
+
+
+    <!-- Stat 3: Obras entregadas (Nodes/Network) -->
+
+    <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
+
+      <div class="stat-visual">
+
+        <svg viewBox="0 0 100 100" class="network-chart">
+
+          <path class="net-link" d="M20,50 L50,20 L80,40 L60,80 Z" />
+
+          <path class="net-link" d="M50,20 L60,80" />
+
+          <circle class="net-node" cx="20" cy="50" r="5" />
+
+          <circle class="net-node" cx="50" cy="20" r="7" />
+
+          <circle class="net-node" cx="80" cy="40" r="6" />
+
+          <circle class="net-node" cx="60" cy="80" r="8" />
+
+        </svg>
+
+        <div class="stat-number"><b data-count="220" data-suffix="+">0</b></div>
+
+      </div>
+
+      <div class="stat-label">Obras entregadas</div>
+
+    </div>
+
+
+
+    <!-- Stat 4: Profesionales capacitados (Gauge) -->
+
+    <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
+
+      <div class="stat-visual">
+
+        <svg viewBox="0 0 100 100" class="gauge-chart">
+
+          <path class="gauge-bg" d="M 15 70 A 40 40 0 1 1 85 70" />
+
+          <path class="gauge-fill" d="M 15 70 A 40 40 0 1 1 85 70" style="stroke-dasharray: 180; stroke-dashoffset: 36;" />
+
+          <circle class="gauge-pivot" cx="50" cy="65" r="5" />
+
+          <line class="gauge-needle" x1="50" y1="65" x2="80" y2="35" />
+
+        </svg>
+
+        <div class="stat-number"><b data-count="400" data-suffix="+">0</b></div>
+
+      </div>
+
+      <div class="stat-label">Profesionales capacitados</div>
+
+    </div>
+
+
+
+  </div>
+
+</section>
+
+
+
+<!-- ==========================================================================
+
+     SERVICIOS
+
+========================================================================== -->
+
+<section id="servicios" class="servicios" data-aos="fade-up">
+
+  <div class="wrap">
+
+    <div class="sec-head reveal" data-aos="fade-up">
+
+      <p class="stamp on-light">Expediente técnico</p>
+
+      <h2>Tres disciplinas, un mismo estándar.</h2>
+
+      <p>De la línea en el plano a la última losa entregada — y de vuelta al aula, formando a quienes construirán mañana.</p>
+
+    </div>
+
+
+
+    <div class="hoja-grid" data-aos="fade-up">
+
+      <article class="hoja" onclick="window.location.href='planos.html'" style="cursor:pointer;">
+
+          <div class="hoja-head"><span>VADGOD / DISEÑO</span><b>PLANOS</b></div>
+
+        <div class="hoja-body">
+
+            <div style="height:180px; margin:-36px -28px 25px -28px; overflow:hidden;"><img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=600&auto=format&fit=crop" style="width:100%; height:100%; object-fit:cover; transition:transform 0.5s ease;" class="card-thumb" alt="Planos"></div>
+
+            <span class="hoja-num">HOJA 01 DE 03</span>
+
+          <h3>Planos &amp; diseño</h3>
+
+          <p>Proyectos arquitectónicos y estructurales con cálculo certificado, listos para tu licencia municipal y tu obra.</p>
+
+          <ul class="hoja-list">
+
+            <li>Planos arquitectónicos y estructurales</li>
+
+            <li>Cálculo y memoria descriptiva</li>
+
+            <li>Gestión de licencias y permisos</li>
+
+            <li>Modelado y metrados</li>
+
+          </ul>
+
+        <div style="margin-top:20px; border-top:1px solid var(--line); padding-top:15px; text-align:center;">
+
+              <span style="color:var(--gold); font-family:var(--mono); font-size:13px; font-weight:bold; letter-spacing:1px; text-transform:uppercase;">Ver más detalles &rarr;</span>
+
+            </div>
+
+          </div>
+
+      </article>
+
+
+
+      <article class="hoja" onclick="openHojaModal('modal-obras')">
+
+          <div class="hoja-head"><span>VADGOD / EJECUCIÓN</span><b>OBRA</b></div>
+
+        <div class="hoja-body">
+
+          <div style="height:180px; margin:-36px -28px 25px -28px; overflow:hidden;"><img src="https://images.unsplash.com/photo-1541888081622-19e34e5db8d3?q=80&w=600&auto=format&fit=crop" style="width:100%; height:100%; object-fit:cover; transition:transform 0.5s ease;" class="card-thumb" alt="Obras"></div>
+
+            <span class="hoja-num">HOJA 02 DE 03</span>
+
+          <h3>Construcciones</h3>
+
+          <p>Ejecución integral de obra civil, con supervisión propia, control de calidad y cumplimiento de plazos.</p>
+
+          <ul class="hoja-list">
+
+            <li>Construcción de viviendas y edificios</li>
+
+            <li>Remodelaciones y ampliaciones</li>
+
+            <li>Obras industriales y comerciales</li>
+
+            <li>Supervisión y control de calidad</li>
+
+          </ul>
+
+        </div>
+
+      </article>
+
+
+
+      <article class="hoja" onclick="openHojaModal('modal-cursos')">
+
+          <div class="hoja-head"><span>VADGOD / FORMACIÓN</span><b>CURSOS</b></div>
+
+        <div class="hoja-body">
+
+          <div style="height:180px; margin:-36px -28px 25px -28px; overflow:hidden;"><img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?q=80&w=600&auto=format&fit=crop" style="width:100%; height:100%; object-fit:cover; transition:transform 0.5s ease;" class="card-thumb" alt="Cursos"></div>
+
+            <span class="hoja-num">HOJA 03 DE 03</span>
+
+          <h3>Capacitaciones</h3>
+
+          <p>Programas técnicos para ingenieros, maestros de obra y equipos de campo, dictados por nuestros especialistas.</p>
+
+          <ul class="hoja-list">
+
+            <li>Seguridad y normativa en obra</li>
+
+            <li>Lectura e interpretación de planos</li>
+
+            <li>Software de diseño estructural</li>
+
+            <li>Gestión y costos de obra</li>
+
+          </ul>
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ==========================================================================
+
+     CAPACITACIONES
+
+========================================================================== -->
+
+<section id="capacitaciones" class="capacitaciones" data-aos="zoom-in-up">
+
+  <div class="wrap">
+
+    <div class="sec-head on-dark reveal" data-aos="fade-up">
+
+      <p class="stamp">Formación técnica</p>
+
+      <h2>Capacitaciones VGI.</h2>
+
+      <p>Llevamos al aula la misma experiencia que aplicamos en obra. Programas presenciales y para empresas.</p>
+
+    </div>
+
+
+
+    <div class="cap-grid" data-aos="fade-up">
+
+      <div class="cap-card featured">
+
+        <span class="cap-level">Programa insignia</span>
+
+        <h4>Lectura e interpretación de planos</h4>
+
+        <p>Del símbolo a la obra: aprende a leer planos arquitectónicos y estructurales como un ingeniero residente.</p>
+
+        <div class="cap-foot"><span>32 horas</span><a href="#contacto">Inscribirme →</a></div>
+
+      </div>
+
+      <div class="cap-card">
+
+        <span class="cap-level">Para equipos de obra</span>
+
+        <h4>Seguridad y normativa en construcción</h4>
+
+        <p>Estándares de seguridad, normativa vigente y prevención de riesgos para personal de campo.</p>
+
+        <div class="cap-foot"><span>20 horas</span><a href="#contacto">Inscribirme →</a></div>
+
+      </div>
+
+      <div class="cap-card">
+
+        <span class="cap-level">Para ingenieros</span>
+
+        <h4>Costos y gestión de obra</h4>
+
+        <p>Metrados, presupuestos y control de cronograma aplicados a proyectos reales.</p>
+
+        <div class="cap-foot"><span>24 horas</span><a href="#contacto">Inscribirme →</a></div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ==========================================================================
+
+     PROCESO
+
+========================================================================== -->
+
+<section class="proceso">
+
+  <div class="wrap">
+
+    <div class="sec-head reveal" data-aos="fade-up">
+
+      <p class="stamp on-light">Cómo trabajamos</p>
+
+      <h2>De la idea a la entrega, en cuatro etapas.</h2>
+
+    </div>
+
+    <div class="proc-track" data-aos="fade-up">
+
+      <div class="proc-step">
+
+        <div class="num">01</div>
+
+        <h4>Diagnóstico</h4>
+
+        <p>Visitamos el terreno, escuchamos el proyecto y definimos alcance, presupuesto referencial y plazos.</p>
+
+      </div>
+
+      <div class="proc-step">
+
+        <div class="num">02</div>
+
+        <h4>Diseño y planos</h4>
+
+        <p>Elaboramos planos arquitectónicos y estructurales, con cálculo y documentación lista para permisos.</p>
+
+      </div>
+
+      <div class="proc-step">
+
+        <div class="num">03</div>
+
+        <h4>Construcción</h4>
+
+        <p>Ejecutamos la obra con cronograma, control de calidad y reportes periódicos de avance.</p>
+
+      </div>
+
+      <div class="proc-step">
+
+        <div class="num">04</div>
+
+        <h4>Entrega</h4>
+
+        <p>Cierre, conformidad y acompañamiento post-entrega. Tu obra, documentada y respaldada.</p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ==========================================================================
+
+     NOTICIAS
+
+========================================================================== -->
+
+<!-- ==========================================================================
+
+     OBRAS DESTACADAS (Reemplazo de Noticias)
+
+========================================================================== -->
+
+<section id="noticias" class="noticias">
+
+  <div class="wrap">
+
+    <div class="sec-head reveal" data-aos="fade-up">
+
+      <p class="stamp on-light">Portafolio Destacado</p>
+
+      <h2>Obras Ejecutadas.</h2>
+
+      <p>Una selección de nuestros mejores proyectos en infraestructura civil, recreación y mantenimiento.</p>
+
+    </div>
+
+    <div class="swiper noticias-swiper" data-aos="fade-up">
+
+      <div class="swiper-wrapper">
+
+        
+
+        <!-- Obra 1 -->
+
+        <div class="swiper-slide">
+
+          <article class="noticia-card" onclick="openHojaModal('modal-obra-destacada-1')" style="cursor:pointer;">
+
+            <div class="noticia-img"><img src="./01.%20RECREACION-%20NACIONES%20UNIDAS%2C%20%20SAN%20ANDRES%2C%20PISCO/IMAGEN%203.png" alt="Recreación"></div>
+
+            <div class="noticia-info">
+
+              <span class="noticia-date">Pisco, Ica</span>
+
+              <h4 class="noticia-title">Parque Naciones Unidas</h4>
+
+              <p class="noticia-desc">Recuperación de espacios públicos con losas deportivas y áreas verdes.</p>
+
+              <a href="javascript:void(0)" class="noticia-link">Ver detalles <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+
+            </div>
+
+          </article>
+
+          <div id="modal-obra-destacada-1" style="display:none;">
+
+              <div style="display:flex; flex-direction:column; max-height:85vh;">
+
+                  <div style="height:350px; position:relative; flex-shrink:0; background:var(--navy);">
+
+                      <img src="./01.%20RECREACION-%20NACIONES%20UNIDAS%2C%20%20SAN%20ANDRES%2C%20PISCO/IMAGEN%203.png" style="width:100%; height:100%; object-fit:cover; opacity:0.8;">
+
+                      <div style="position:absolute; bottom:0; left:0; right:0; background:linear-gradient(to top, rgba(6,19,37,1) 0%, rgba(6,19,37,0.7) 60%, transparent 100%); padding:60px 40px 25px;">
+
+                          <h3 style="color:#fff; font-family:var(--display); font-size:clamp(24px, 3vw, 36px); line-height:1.2; margin-top:10px; text-transform:uppercase;">Parque Naciones Unidas</h3>
+
+                      </div>
+
+                  </div>
+
+                  <div style="padding:40px; overflow-y:auto; color:var(--steel); font-size:16px; line-height:1.8; background:#fff;">
+
+                      <p>Proyecto de infraestructura recreativa entregado exitosamente en San Andrés, Pisco. Nuestro equipo se encargó de la construcción integral de losas deportivas, mobiliario urbano y áreas verdes, garantizando espacios seguros para la comunidad.</p>
+
+                      <div style="margin-top:40px; text-align:right;">
+
+                          <button onclick="closeHojaModal()" style="background:var(--navy); color:#fff; padding:10px 20px; border:none; border-radius:4px; cursor:pointer;">Cerrar</button>
+
+                      </div>
+
+                  </div>
+
+              </div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Obra 2 -->
+
+        <div class="swiper-slide">
+
+          <article class="noticia-card" onclick="openHojaModal('modal-obra-destacada-2')" style="cursor:pointer;">
+
+            <div class="noticia-img"><img src="./02.%20PISTAS%20Y%20VEREDAS-%20CA%C3%91ETE.%20LIMA/IMAGEN%2014.png" alt="Pistas y Veredas"></div>
+
+            <div class="noticia-info">
+
+              <span class="noticia-date">Cañete, Lima</span>
+
+              <h4 class="noticia-title">Pavimentación de Vías</h4>
+
+              <p class="noticia-desc">Ejecución de pistas y veredas de concreto de alta resistencia.</p>
+
+              <a href="javascript:void(0)" class="noticia-link">Ver detalles <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+
+            </div>
+
+          </article>
+
+          <div id="modal-obra-destacada-2" style="display:none;">
+
+              <div style="display:flex; flex-direction:column; max-height:85vh;">
+
+                  <div style="height:350px; position:relative; flex-shrink:0; background:var(--navy);">
+
+                      <img src="./02.%20PISTAS%20Y%20VEREDAS-%20CA%C3%91ETE.%20LIMA/IMAGEN%2014.png" style="width:100%; height:100%; object-fit:cover; opacity:0.8;">
+
+                      <div style="position:absolute; bottom:0; left:0; right:0; background:linear-gradient(to top, rgba(6,19,37,1) 0%, rgba(6,19,37,0.7) 60%, transparent 100%); padding:60px 40px 25px;">
+
+                          <h3 style="color:#fff; font-family:var(--display); font-size:clamp(24px, 3vw, 36px); line-height:1.2; margin-top:10px; text-transform:uppercase;">Pavimentación de Vías</h3>
+
+                      </div>
+
+                  </div>
+
+                  <div style="padding:40px; overflow-y:auto; color:var(--steel); font-size:16px; line-height:1.8; background:#fff;">
+
+                      <p>Modernización de infraestructura vial en Cañete, Lima. Ejecución de pistas y veredas utilizando concreto premezclado de alta resistencia, cumpliendo con la normativa MTC para garantizar durabilidad ante el tránsito pesado.</p>
+
+                      <div style="margin-top:40px; text-align:right;">
+
+                          <button onclick="closeHojaModal()" style="background:var(--navy); color:#fff; padding:10px 20px; border:none; border-radius:4px; cursor:pointer;">Cerrar</button>
+
+                      </div>
+
+                  </div>
+
+              </div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Obra 3 -->
+
+        <div class="swiper-slide">
+
+          <article class="noticia-card" onclick="openHojaModal('modal-obra-destacada-3')" style="cursor:pointer;">
+
+            <div class="noticia-img"><img src="./03.%20MANTENIMIENTO-%20PISCO/IMAGEN%202.png" alt="Mantenimiento"></div>
+
+            <div class="noticia-info">
+
+              <span class="noticia-date">Pisco, Ica</span>
+
+              <h4 class="noticia-title">Mantenimiento de Infraestructura</h4>
+
+              <p class="noticia-desc">Servicios integrales de mantenimiento preventivo y correctivo estructural.</p>
+
+              <a href="javascript:void(0)" class="noticia-link">Ver detalles <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+
+            </div>
+
+          </article>
+
+          <div id="modal-obra-destacada-3" style="display:none;">
+
+              <div style="display:flex; flex-direction:column; max-height:85vh;">
+
+                  <div style="height:350px; position:relative; flex-shrink:0; background:var(--navy);">
+
+                      <img src="./03.%20MANTENIMIENTO-%20PISCO/IMAGEN%202.png" style="width:100%; height:100%; object-fit:cover; opacity:0.8;">
+
+                      <div style="position:absolute; bottom:0; left:0; right:0; background:linear-gradient(to top, rgba(6,19,37,1) 0%, rgba(6,19,37,0.7) 60%, transparent 100%); padding:60px 40px 25px;">
+
+                          <h3 style="color:#fff; font-family:var(--display); font-size:clamp(24px, 3vw, 36px); line-height:1.2; margin-top:10px; text-transform:uppercase;">Mantenimiento Estructural</h3>
+
+                      </div>
+
+                  </div>
+
+                  <div style="padding:40px; overflow-y:auto; color:var(--steel); font-size:16px; line-height:1.8; background:#fff;">
+
+                      <p>Trabajos de mantenimiento y rehabilitación de infraestructura pública en la provincia de Pisco. Nuestro personal técnico aplicó recubrimientos y soluciones de restauración para extender la vida útil de los elementos constructivos.</p>
+
+                      <div style="margin-top:40px; text-align:right;">
+
+                          <button onclick="closeHojaModal()" style="background:var(--navy); color:#fff; padding:10px 20px; border:none; border-radius:4px; cursor:pointer;">Cerrar</button>
+
+                      </div>
+
+                  </div>
+
+              </div>
+
+          </div>
+
+        </div>
+
+
+
+      </div>
+
+    </div>
+
+    
+
+    <div style="text-align: center; margin-top: 50px;">
+
+        <a href="obras.html" class="btn btn-gold" style="padding: 18px 40px; font-size: 16px;">VER MÁS OBRAS COMPLETAS</a>
+
+    </div>
+
+
+
+  </div>
+
+</section>
+
+
+
+<!-- ==========================================================================
+
+     OBRAS
+
+========================================================================== -->
+
+<section id="obras" class="obras" data-aos="fade-in">
+
+  <div class="wrap">
+
+    <div class="sec-head reveal" data-aos="fade-up">
+
+      <p class="stamp on-light">Portafolio</p>
+
+      <h2>Obras entregadas.</h2>
+
+      <p>Una muestra de proyectos ejecutados de inicio a fin por nuestro equipo.</p>
+
+    </div>
+
+
+
+    <div class="swiper obras-swiper" data-aos="fade-up">
+
+      <div class="swiper-wrapper">
+
+            <div class="swiper-slide">
+
+        <article class="obra-card">
+
+          <div class="obra-art">
+
+            <span class="obra-tag">MEJORAMIENTO</span>
+
+            <img src="./storage/obras/8jdoRW10KBr2AcYIDdAuDbq4dpHkLbfGVUwd25HH.jpg" alt="Mejoramiento de Vía Urbana">
+
+            <div class="obra-overlay">
+
+              <div class="obra-btn"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg></div>
+
+            </div>
+
+          </div>
+
+          <div class="obra-info">
+
+            <div class="meta"><span>LORETO</span><span>2026</span></div>
+
+            <h4>Mejoramiento de Vía Urbana</h4>
+
+          </div>
+
+        </article>
+
+      </div>
+
+            <div class="swiper-slide">
+
+        <article class="obra-card">
+
+          <div class="obra-art">
+
+            <span class="obra-tag">CONSTRUCCION</span>
+
+            <img src="./storage/obras/2TJJmc9q16eyzeSo5DAx3f7chCOwoNeMViMJGCY0.jpg" alt="Título: Finalización de Obra: Reservorio Elevado e Infraestructura Hídrica Sostenible.">
+
+            <div class="obra-overlay">
+
+              <div class="obra-btn"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg></div>
+
+            </div>
+
+          </div>
+
+          <div class="obra-info">
+
+            <div class="meta"><span>ICA</span><span>2023</span></div>
+
+            <h4>Título: Finalización de Obra: Reservorio Elevado e Infraestructura Hídrica Sostenible.</h4>
+
+          </div>
+
+        </article>
+
+      </div>
+
+            <div class="swiper-slide">
+
+        <article class="obra-card">
+
+          <div class="obra-art">
+
+            <span class="obra-tag">CONSTRUCCION</span>
+
+            <img src="./storage/obras/LQbDN2fYWVkgnx5zsFM2oIF2A1T3156X5BnszIHu.jpg" alt="Obra Culminada! Nueva Infraestructura Vial Entregada con los Más Altos Estándares">
+
+            <div class="obra-overlay">
+
+              <div class="obra-btn"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg></div>
+
+            </div>
+
+          </div>
+
+          <div class="obra-info">
+
+            <div class="meta"><span>ICA. PERÚ</span><span>2023</span></div>
+
+            <h4>Obra Culminada! Nueva Infraestructura Vial Entregada con los Más Altos Estándares</h4>
+
+          </div>
+
+        </article>
+
+      </div>
+
+            </div>
+
+      <div class="swiper-pagination-obras" style="position:relative; margin-top:20px;"></div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ==========================================================================
+
+     TESTIMONIOS
+
+========================================================================== -->
+
+<section class="testimonios">
+
+  <div class="wrap">
+
+    <div class="test-wrap reveal" data-aos="fade-up">
+
+      <div>
+
+        <p class="test-quote">"Entregaron la obra <span>antes del plazo</span> y con la documentación impecable, planos as-built incluidos."</p>
+
+        <p class="test-who">— Gerente de Proyectos, Constructora asociada</p>
+
+      </div>
+
+      <div class="client-marks">
+
+                <div class="client-mark" title="ACEROS AREQUIPA">
+
+                    <img src="./storage/aliados/qdxDX4Is7LXzQiO4274OO4ZoyyoEmvIbcTBmcR0r.webp" alt="ACEROS AREQUIPA">
+
+                  </div>
+
+                <div class="client-mark" title="CEMENTO SOL">
+
+                    <img src="./storage/aliados/gRpn81FV7bMEmfIBQREgyGnJyFfxRsTxRJr7eRUB.jpg" alt="CEMENTO SOL">
+
+                  </div>
+
+                <div class="client-mark" title="CIP">
+
+                    <img src="./storage/aliados/IUbbSY3xCcy6hNE5Xz17vDL5Z2Oj8CLN9fkKMD5r.png" alt="CIP">
+
+                  </div>
+
+                <div class="client-mark" title="SLG">
+
+                    <img src="./storage/aliados/qPS6pte7yVCcqvtVWwukart42a2wPySC8w1mW9Vk.png" alt="SLG">
+
+                  </div>
+
+                <div class="client-mark" title="csfefsefsef">
+
+                    <img src="./storage/aliados/fHSSJMGyFg8BCa1DhN270wRvgyEnR5UFqVPMzaWk.webp" alt="csfefsefsef">
+
+                  </div>
+
+              </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ==========================================================================
+
+     FAQ
+
+========================================================================== -->
+
+<section id="faq" class="faq">
+
+  <div class="wrap">
+
+    <div class="sec-head reveal" data-aos="fade-up">
+
+      <p class="stamp on-light">Dudas frecuentes</p>
+
+      <h2>Preguntas frecuentes.</h2>
+
+    </div>
+
+
+
+    <div class="faq-list" data-aos="fade-up">
+
+      <div class="faq-item">
+
+        <button class="faq-question" aria-expanded="false">
+
+          <span>¿En qué ciudades construyen?</span>
+
+          <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+
+        </button>
+
+        <div class="faq-answer">
+
+          <p>Nuestra sede de operaciones se encuentra en Ica, Perú. Ejecutamos proyectos en toda la región y tenemos capacidad logística para desarrollar obras en ciudades aledañas del sur y centro del país.</p>
+
+        </div>
+
+      </div>
+
+      <div class="faq-item">
+
+        <button class="faq-question" aria-expanded="false">
+
+          <span>¿El diseño de planos incluye trámites municipales?</span>
+
+          <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+
+        </button>
+
+        <div class="faq-answer">
+
+          <p>Sí, nuestro servicio de diseño estructural y arquitectónico abarca la elaboración del expediente técnico completo y la gestión para obtener la licencia de construcción municipal sin contratiempos.</p>
+
+        </div>
+
+      </div>
+
+      <div class="faq-item">
+
+        <button class="faq-question" aria-expanded="false">
+
+          <span>¿Dan facilidades de pago?</span>
+
+          <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+
+        </button>
+
+        <div class="faq-answer">
+
+          <p>Trabajamos con un esquema de valorizaciones según avance de obra. Los pagos se dividen en hitos específicos conforme la construcción avanza, brindando total transparencia financiera.</p>
+
+        </div>
+
+      </div>
+
+      <div class="faq-item">
+
+        <button class="faq-question" aria-expanded="false">
+
+          <span>¿Qué garantía ofrecen tras entregar la obra?</span>
+
+          <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+
+        </button>
+
+        <div class="faq-answer">
+
+          <p>Entregamos la obra con toda la documentación "as-built", manuales de mantenimiento y garantías sobre estructura e instalaciones, de acuerdo a lo exigido por el Reglamento Nacional de Edificaciones.</p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ==========================================================================
+
+     CONTACTO
+
+========================================================================== -->
+
+<section id="contacto" class="contacto">
+
+  <div class="wrap">
+
+    <div class="sec-head on-dark reveal" data-aos="fade-up">
+
+      <p class="stamp">Hablemos de tu proyecto</p>
+
+      <h2>Contáctanos.</h2>
+
+    </div>
+
+
+
+    <div class="contact-grid" data-aos="fade-up">
+
+      <!-- Columna Izquierda: Mapa -->
+
+      <div class="contact-map-col">
+
+        <div class="map-frame">
+
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3215.1072347608406!2d-75.73167242582771!3d-14.06399733636121!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9110e2bdae3019ad%3A0xdc8edaf0195e4c53!2sPlaza%20de%20Armas%20de%20Ica%2C%20Ica%2011001!5e1!3m2!1ses!2spe!4v1783993927491!5m2!1ses!2spe" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Columna Derecha: Información y Formulario -->
+
+      <div class="contact-info-col">
+
+        <div class="info-blocks">
+
+          <div class="info-item">
+
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+
+            <div>
+
+              <dt>Oficina Principal</dt>
+
+              <dd>Av. Principal 482, Ica, Perú</dd>
+
+            </div>
+
+          </div>
+
+          <div class="info-item">
+
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+
+            <div>
+
+              <dt>Horarios de Atención</dt>
+
+              <dd>Lunes a sábado, 9:00 am – 6:00 pm</dd>
+
+            </div>
+
+          </div>
+
+          <div class="info-item">
+
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"></path></svg>
+
+            <div>
+
+              <dt>Teléfono</dt>
+
+              <dd>+51 984 515 818</dd>
+
+            </div>
+
+          </div>
+
+          <div class="info-item">
+
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+
+            <div>
+
+              <dt>Correo Corporativo</dt>
+
+              <dd>vadgi22@gmail.com</dd>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <a href="https://wa.me/+51 984 515 818?text=Hola%20VADGOD%20INGS%2C%20quiero%20una%20cotizaci%C3%B3n" class="contact-whats" target="_blank" rel="noopener">
+
+          <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.47 3.46 1.29 4.92L2 22l5.31-1.39a9.86 9.86 0 0 0 4.73 1.2h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.51 2 12.04 2zm0 18.1h-.01a8.2 8.2 0 0 1-4.18-1.14l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.35c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.42 5.83c0 4.55-3.7 8.2-8.25 8.2zm4.52-6.16c-.25-.12-1.47-.73-1.7-.81-.23-.08-.39-.12-.56.12-.16.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.04-.39-1.99-1.24-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.36-.77-1.86-.2-.49-.41-.42-.56-.43h-.48c-.16 0-.43.06-.66.31-.23.25-.86.85-.86 2.06 0 1.22.89 2.4 1.01 2.56.12.17 1.74 2.74 4.27 3.74.6.26 1.06.41 1.43.53.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.1-.22-.16-.47-.28z"/></svg>
+
+          Escríbenos por WhatsApp
+
+        </a>
+
+
+
+        <!-- Formulario Compacto -->
+
+        <form class="cform" id="contactForm">
+
+          <div class="row2">
+
+            <div><input id="cname" type="text" required placeholder="Tu nombre completo"></div>
+
+            <div><input id="cphone" type="tel" required placeholder="Teléfono / Celular"></div>
+
+          </div>
+
+          <div><textarea id="cmsg" required placeholder="¿En qué te podemos ayudar?"></textarea></div>
+
+          <div class="form-footer">
+
+            <button type="submit" class="submit">Enviar consulta</button>
+
+            <p class="form-note">Respuesta en 24h hábiles</p>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ==========================================================================
+
+     FOOTER
+
+========================================================================== -->
+
+<footer>
+
+  <div class="wrap">
+
+    <div class="foot-top">
+
+      <div class="foot-brand">
+
+        <div class="brand">
+
+          <img src="./WhatsApp Image 2026-07-09 at 10.41.46 AM.png" alt="GRUPO VAD GOD ING'S" style="height:70px; width:auto; filter: drop-shadow(0px 4px 18px rgba(201, 162, 39, 0.4)) drop-shadow(0px 2px 4px rgba(0,0,0,0.6));">
+
+          <span class="brand-text">Grupo Vad God Ing´s</span>
+
+        </div>
+
+        <p>Ingeniería civil, construcción y consultoría técnica orientada a la excelencia. Soluciones integrales con los más altos estándares de calidad para el éxito de tus proyectos.</p>
+
+      </div>
+
+
+
+      <div class="foot-links">
+
+        <div class="foot-col">
+
+          <h5>Empresa</h5>
+
+          <a href="#servicios">Servicios</a>
+
+          <a href="#obras">Obras</a>
+
+          <a href="nosotros.html">Nosotros</a>
+
+          
+
+        </div>
+
+        <div class="foot-col">
+
+          <h5>Formación</h5>
+
+          <a href="#capacitaciones">Capacitaciones</a>
+
+          <a href="#contacto">Inscripciones</a>
+
+        </div>
+
+        <div class="foot-col">
+
+          <h5>Legales</h5>
+
+          <a href="./terminos">Términos y Condiciones</a>
+
+          <a href="./privacidad">Políticas de Privacidad</a>
+
+          <a href="./cookies">Uso de Cookies</a>
+
+        </div>
+
+        <div class="foot-col">
+
+          <h5>Contacto</h5>
+
+          <a href="mailto:vadgi22@gmail.com">vadgi22@gmail.com</a>
+
+          <a href="tel:+51 984 515 818">+51 984 515 818</a>
+
+          <span style="display:block; margin-top:4px; font-size:13.5px; color:rgba(250,248,244,.6);">Av. Principal 482, Ica, Perú</span>
+
+          <a href="index.htmllibro-reclamaciones" class="foot-reclamo" style="display:inline-block; margin-top:14px;" title="Libro de Reclamaciones Virtual">
+
+            <img src="./LibroReclamacionDigital.jpg" alt="Libro de Reclamaciones">
+
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="foot-bottom">
+
+      <span>© <span id="year"></span> VADGOD INGS. Todos los derechos reservados.</span>
+
+      <span class="powered-by">POWERED BY <a href="https://dynastron.com/" target="_blank" rel="noopener" style="font-family:'Oswald',sans-serif; font-weight:700; letter-spacing:.1em; color:#fff;">DYNASTRON</a></span>
+
+      <div class="foot-social">
+
+                        <a href="https://www.facebook.com/profile.php?id=61591452514201&amp;locale=es_LA" target="_blank" aria-label="Facebook"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+
+                      </div>
+
+    </div>
+
+  </div>
+
+</footer>
+
+
+
+<div class="wa-floats">
+
+    <a href="https://wa.me/+51 984 515 818?text=Hola%20VADGOD%20INGS" class="wa-float" target="_blank" rel="noopener" aria-label="Chatear por WhatsApp">
+
+    <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.47 3.46 1.29 4.92L2 22l5.31-1.39a9.86 9.86 0 0 0 4.73 1.2h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.51 2 12.04 2zm0 18.1h-.01a8.2 8.2 0 0 1-4.18-1.14l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.35c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.42 5.83c0 4.55-3.7 8.2-8.25 8.2zm4.52-6.16c-.25-.12-1.47-.73-1.7-.81-.23-.08-.39-.12-.56.12-.16.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.04-.39-1.99-1.24-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.36-.77-1.86-.2-.49-.41-.42-.56-.43h-.48c-.16 0-.43.06-.66.31-.23.25-.86.85-.86 2.06 0 1.22.89 2.4 1.01 2.56.12.17 1.74 2.74 4.27 3.74.6.26 1.06.41 1.43.53.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.1-.22-.16-.47-.28z"/></svg>
+
+  </a>
+
+</div>
+
+
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+
+(function(){
+
+  "use strict";
+
+
+
+  AOS.init({ duration: 800, once: false, offset: 50, mirror: true });
+
+
+
+  new Swiper('.main-hero-swiper', {
+
+      effect: 'fade',
+
+      fadeEffect: { crossFade: true },
+
+      speed: 1500,
+
+    slidesPerView: 1, loop: true,
+
+    autoplay: { delay: 5000, disableOnInteraction: false },
+
+    pagination: { el: '.swiper-pagination', clickable: true },
+
+  });
+
+
+
+  new Swiper('.obras-swiper', {
+
+      speed: 800,
+
+    slidesPerView: 1, spaceBetween: 20,
+
+    breakpoints: { 640: { slidesPerView: 2, spaceBetween: 20 }, 1024: { slidesPerView: 3, spaceBetween: 30 } },
+
+    pagination: { el: '.swiper-pagination-obras', clickable: true },
+
+  });
+
+
+
+  new Swiper('.noticias-swiper', {
+
+      speed: 800,
+
+    slidesPerView: 1, spaceBetween: 20,
+
+    breakpoints: { 640: { slidesPerView: 2, spaceBetween: 20 }, 1024: { slidesPerView: 3, spaceBetween: 30 } },
+
+    pagination: { el: '.swiper-pagination-noticias', clickable: true },
+
+  });
+
+
+
+  // Nav scroll state
+
+  const nav = document.getElementById('siteNav');
+
+  window.addEventListener('scroll', () => {
+
+    nav.classList.toggle('is-scrolled', window.scrollY > 40);
+
+  }, { passive: true });
+
+
+
+  // Mobile menu
+
+  const burger = document.getElementById('burger');
+
+  const navLinks = document.getElementById('navLinks');
+
+  burger.addEventListener('click', () => {
+
+    const isOpen = navLinks.classList.toggle('is-open');
+
+    burger.classList.toggle('is-open', isOpen);
+
+    burger.setAttribute('aria-expanded', String(isOpen));
+
+  });
+
+  navLinks.querySelectorAll('a').forEach(link => {
+
+    link.addEventListener('click', () => {
+
+      navLinks.classList.remove('is-open');
+
+      burger.classList.remove('is-open');
+
+      burger.setAttribute('aria-expanded', 'false');
+
+    });
+
+  });
+
+
+
+  // Stat counters
+
+  const counters = document.querySelectorAll('.stat-number b[data-count]');
+
+  const countIO = new IntersectionObserver((entries) => {
+
+    entries.forEach(entry => {
+
+      if (!entry.isIntersecting) return;
+
+      const el = entry.target;
+
+      const target = parseInt(el.dataset.count, 10);
+
+      const suffix = el.dataset.suffix || '';
+
+      const duration = 1400;
+
+      const start = performance.now();
+
+      function tick(now){
+
+        const p = Math.min((now - start) / duration, 1);
+
+        const eased = 1 - Math.pow(1 - p, 3);
+
+        el.textContent = Math.round(eased * target) + suffix;
+
+        if (p < 1) requestAnimationFrame(tick);
+
+      }
+
+      requestAnimationFrame(tick);
+
+      countIO.unobserve(el);
+
+    });
+
+  }, { threshold: 0.4 });
+
+  counters.forEach(c => countIO.observe(c));
+
+
+
+  // Contact form -> WhatsApp handoff
+
+  document.getElementById('contactForm').addEventListener('submit', function(e){
+
+    e.preventDefault();
+
+    const name = document.getElementById('cname').value;
+
+    const phone = document.getElementById('cphone').value;
+
+    const service = document.getElementById('cservice').value;
+
+    const msg = document.getElementById('cmsg').value;
+
+    const text = encodeURIComponent(`Hola VADGOD INGS, soy ${name} (tel: ${phone}). Me interesa: ${service}. ${msg}`);
+
+    window.open(`https://wa.me/51999999999?text=${text}`, '_blank');
+
+  });
+
+
+
+  // FAQ accordion (accessible)
+
+  document.querySelectorAll('.faq-question').forEach(btn => {
+
+    btn.addEventListener('click', () => {
+
+      const item = btn.parentElement;
+
+      const isActive = item.classList.contains('is-active');
+
+      document.querySelectorAll('.faq-item').forEach(i => {
+
+        i.classList.remove('is-active');
+
+        i.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+
+      });
+
+      if (!isActive){
+
+        item.classList.add('is-active');
+
+        btn.setAttribute('aria-expanded', 'true');
+
+      }
+
+    });
+
+  });
+
+
+
+  // Reveal-on-scroll utility (for elements not covered by AOS)
+
+  const revealIO = new IntersectionObserver((entries) => {
+
+    entries.forEach(entry => {
+
+      if (entry.isIntersecting){
+
+        entry.target.classList.add('in');
+
+        revealIO.unobserve(entry.target);
+
+      }
+
+    });
+
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
+
+
+
+  // Footer year
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+
+
+    // Observer for counters and SVGs
+
+    const observer = new IntersectionObserver((entries) => {
+
+        entries.forEach(entry => {
+
+            if (entry.isIntersecting) {
+
+                // Animate Numbers
+
+                const counters = entry.target.querySelectorAll('b[data-count]');
+
+                counters.forEach(counter => {
+
+                    const target = +counter.getAttribute('data-count');
+
+                    const suffix = counter.getAttribute('data-suffix') || '';
+
+                    const duration = 2000; 
+
+                    const increment = target / (duration / 16);
+
+                    let current = 0;
+
+                    
+
+                    const updateCounter = () => {
+
+                        current += increment;
+
+                        if (current < target) {
+
+                            counter.innerText = Math.ceil(current) + suffix;
+
+                            requestAnimationFrame(updateCounter);
+
+                        } else {
+
+                            counter.innerText = target + suffix;
+
+                        }
+
+                    };
+
+                    updateCounter();
+
+                    
+
+                    // Prevent running again if once is desired, but since mirror:true we can let it re-run or just remove data-count
+
+                    counter.removeAttribute('data-count'); 
+
+                });
+
+
+
+                // Animate SVGs
+
+                const ring = entry.target.querySelector('.ring-fill');
+
+                if(ring) ring.style.strokeDashoffset = '56'; // Target offset
+
+                
+
+                const gauge = entry.target.querySelector('.gauge-fill');
+
+                if(gauge) gauge.style.strokeDashoffset = '36';
+
+                
+
+                const needle = entry.target.querySelector('.gauge-needle');
+
+                if(needle) needle.style.transform = 'rotate(100deg)';
+
+                
+
+            }
+
+        });
+
+    }, { threshold: 0.5 });
+
+
+
+    document.querySelectorAll('.stat-card').forEach(card => {
+
+        // Reset SVGs for animation
+
+        const ring = card.querySelector('.ring-fill');
+
+        if(ring) {
+
+            ring.style.strokeDasharray = '283';
+
+            ring.style.strokeDashoffset = '283';
+
+        }
+
+        const gauge = card.querySelector('.gauge-fill');
+
+        if(gauge) {
+
+            gauge.style.strokeDasharray = '180';
+
+            gauge.style.strokeDashoffset = '180';
+
+        }
+
+        observer.observe(card);
+
+    });
+
+})();
+
+</script>
+
+
+
+
+
+<!-- Hoja Modal Rediseñado -->
+
+<div id="hojaModal" style="position:fixed; inset:0; background:rgba(6,19,37,0.85); backdrop-filter:blur(10px); z-index:9999; display:none; align-items:center; justify-content:center; padding:20px; opacity:0; transition:opacity 0.4s ease;">
+
+    <div style="background:#fff; max-width:1000px; width:100%; max-height:90vh; overflow-y:auto; border-radius:12px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); position:relative; transform:translateY(40px) scale(0.95); transition:all 0.4s cubic-bezier(0.16, 1, 0.3, 1);" id="hojaModalContent">
+
+        <button onclick="closeHojaModal()" style="position:absolute; top:20px; right:20px; background:rgba(255,255,255,0.9); color:var(--navy); border:none; width:40px; height:40px; border-radius:50%; cursor:pointer; z-index:10; display:flex; align-items:center; justify-content:center; font-weight:bold; box-shadow:0 4px 10px rgba(0,0,0,0.1); transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">✕</button>
+
+        <div id="hojaModalInject"></div>
+
+    </div>
+
+</div>
+
+
+
+<!-- Modal Templates (Hidden) -->
+
+
+
+
+
+            
+
+</div>
+
+
+
+<div id="modal-obras" style="display:none;">
+
+    <div style="display:flex; flex-wrap:wrap; min-height:500px;">
+
+        <div style="flex:1; min-width:300px; position:relative; background:var(--navy);">
+
+            <img src="https://images.unsplash.com/photo-1541888081622-19e34e5db8d3?q=80&w=800&auto=format&fit=crop" style="width:100%; height:100%; object-fit:cover; position:absolute; inset:0; opacity:0.8;">
+
+            <div style="position:absolute; bottom:30px; left:30px; right:30px; color:#fff;">
+
+                <span style="font-family:var(--mono); font-size:12px; letter-spacing:0.1em; color:var(--gold); display:block; margin-bottom:10px;">HOJA 02 / VADGOD</span>
+
+                <h3 style="font-size:32px; font-family:var(--display); line-height:1.1; text-transform:uppercase;">Construcción y Ejecución de Obra</h3>
+
+            </div>
+
+        </div>
+
+        <div style="flex:1.2; min-width:300px; padding:50px 40px; display:flex; flex-direction:column; justify-content:center;">
+
+            <span style="display:inline-block; padding:6px 14px; background:rgba(201,162,39,0.1); color:var(--gold); border-radius:20px; font-size:12px; font-family:var(--mono); margin-bottom:20px; width:fit-content;">Ejecución Civil</span>
+
+            <p style="color:var(--steel); font-size:16px; line-height:1.8; margin-bottom:25px;">
+
+                Materializamos tus proyectos con los más altos estándares de calidad y seguridad. Contamos con un equipo de ingenieros, residentes y operarios calificados que supervisan cada fase, garantizando resistencia, cronogramas y presupuestos exactos.
+
+            </p>
+
+            <h4 style="color:var(--navy); font-size:18px; margin-bottom:15px; text-transform:uppercase;">Nuestra Especialidad</h4>
+
+            <ul style="list-style:none; padding:0; margin:0 0 30px 0; color:var(--ink); font-size:15px; line-height:1.6;">
+
+                <li style="display:flex; margin-bottom:12px;"><span style="color:var(--ok); margin-right:12px;">✔</span> Ejecución de Viviendas, Edificios y Proyectos Comerciales.</li>
+
+                <li style="display:flex; margin-bottom:12px;"><span style="color:var(--ok); margin-right:12px;">✔</span> Remodelaciones, Ampliaciones y Reforzamiento Estructural.</li>
+
+                <li style="display:flex; margin-bottom:12px;"><span style="color:var(--ok); margin-right:12px;">✔</span> Supervisión de Obra y Control de Calidad estricto.</li>
+
+                <li style="display:flex; margin-bottom:12px;"><span style="color:var(--ok); margin-right:12px;">✔</span> Sistema "Llave en Mano": nos encargamos de absolutamente todo.</li>
+
+            </ul>
+
+            <a href="https://wa.me/+51 984 515 818?text=Hola,%20deseo%20más%20información%20sobre%20Ejecución%20de%20Obras" target="_blank" style="display:inline-block; background:var(--gold); color:var(--navy); padding:12px 24px; text-decoration:none; font-family:var(--mono); font-size:14px; text-transform:uppercase; font-weight:bold; letter-spacing:1px; width:fit-content; border-radius:4px; transition:background 0.3s;">Hablar con un Ingeniero</a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div id="modal-cursos" style="display:none;">
+
+    <div style="display:flex; flex-wrap:wrap; min-height:500px;">
+
+        <div style="flex:1; min-width:300px; position:relative; background:var(--navy);">
+
+            <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?q=80&w=800&auto=format&fit=crop" style="width:100%; height:100%; object-fit:cover; position:absolute; inset:0; opacity:0.8;">
+
+            <div style="position:absolute; bottom:30px; left:30px; right:30px; color:#fff;">
+
+                <span style="font-family:var(--mono); font-size:12px; letter-spacing:0.1em; color:var(--gold); display:block; margin-bottom:10px;">HOJA 03 / VADGOD</span>
+
+                <h3 style="font-size:32px; font-family:var(--display); line-height:1.1; text-transform:uppercase;">Capacitaciones y Formación Técnica</h3>
+
+            </div>
+
+        </div>
+
+        <div style="flex:1.2; min-width:300px; padding:50px 40px; display:flex; flex-direction:column; justify-content:center;">
+
+            <span style="display:inline-block; padding:6px 14px; background:rgba(201,162,39,0.1); color:var(--gold); border-radius:20px; font-size:12px; font-family:var(--mono); margin-bottom:20px; width:fit-content;">Instituto VADGOD</span>
+
+            <p style="color:var(--steel); font-size:16px; line-height:1.8; margin-bottom:25px;">
+
+                Compartimos nuestra experiencia directamente desde el campo. Dictamos programas de formación especializados para ingenieros civiles, arquitectos, maestros de obra y operarios, asegurando que el mercado mantenga estándares de alta calidad.
+
+            </p>
+
+            <h4 style="color:var(--navy); font-size:18px; margin-bottom:15px; text-transform:uppercase;">Programas Disponibles</h4>
+
+            <ul style="list-style:none; padding:0; margin:0 0 30px 0; color:var(--ink); font-size:15px; line-height:1.6;">
+
+                <li style="display:flex; margin-bottom:12px;"><span style="color:var(--ok); margin-right:12px;">✔</span> Lectura e Interpretación Avanzada de Planos (Arquitectura y Estructuras).</li>
+
+                <li style="display:flex; margin-bottom:12px;"><span style="color:var(--ok); margin-right:12px;">✔</span> Software BIM: Revit, AutoCAD y Cypecad.</li>
+
+                <li style="display:flex; margin-bottom:12px;"><span style="color:var(--ok); margin-right:12px;">✔</span> Seguridad Industrial y Salud Ocupacional en Obras de Construcción.</li>
+
+                <li style="display:flex; margin-bottom:12px;"><span style="color:var(--ok); margin-right:12px;">✔</span> Gestión Estratégica y Costos de Obra (Presupuestos y Metrados).</li>
+
+            </ul>
+
+            <a href="https://wa.me/+51 984 515 818?text=Hola,%20deseo%20matricularme%20en%20sus%20cursos%20de%20capacitación" target="_blank" style="display:inline-block; background:var(--gold); color:var(--navy); padding:12px 24px; text-decoration:none; font-family:var(--mono); font-size:14px; text-transform:uppercase; font-weight:bold; letter-spacing:1px; width:fit-content; border-radius:4px; transition:background 0.3s;">Ver Inscripciones</a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+function openHojaModal(id) {
+
+    const contentHtml = document.getElementById(id).innerHTML;
+
+    document.getElementById('hojaModalInject').innerHTML = contentHtml;
+
+    
+
+    const modal = document.getElementById('hojaModal');
+
+    const content = document.getElementById('hojaModalContent');
+
+    
+
+    modal.style.display = 'flex';
+
+    // trigger reflow
+
+    void modal.offsetWidth;
+
+    modal.style.opacity = '1';
+
+    content.style.transform = 'translateY(0) scale(1)';
+
+}
+
+function closeHojaModal() {
+
+    const modal = document.getElementById('hojaModal');
+
+    const content = document.getElementById('hojaModalContent');
+
+    
+
+    modal.style.opacity = '0';
+
+    content.style.transform = 'translateY(40px) scale(0.95)';
+
+    setTimeout(() => { modal.style.display = 'none'; }, 400);
+
+}
+
+</script>
+
+
+
+
+
+</body>
+
+</html>
